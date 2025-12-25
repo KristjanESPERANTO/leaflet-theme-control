@@ -25,6 +25,8 @@ export class ThemeControl extends Control {
       onChange: null,
       getLabel: null, // Function to get translated theme labels: (themeKey) => string
       getEditorLabels: null, // Function to get translated editor UI labels: (key) => string
+      panelPosition: 'topright', // Position of the editor panel: 'topright', 'topleft', 'bottomright', 'bottomleft'
+      panelZIndex: 1000, // Z-index for editor panel
     })
   }
 
@@ -202,6 +204,23 @@ export class ThemeControl extends Control {
     // Add current theme class to root
     if (theme.className) {
       this.root.classList.add(theme.className)
+    }
+
+    // Also apply theme class to control container if map exists
+    if (this.map) {
+      const controlContainer = this.map.getContainer().querySelector('.leaflet-control-container')
+      if (controlContainer) {
+        // Remove all theme classes from control container
+        Object.values(this.options.themes).forEach((t) => {
+          if (t.className) {
+            controlContainer.classList.remove(t.className)
+          }
+        })
+        // Add current theme class
+        if (theme.className) {
+          controlContainer.classList.add(theme.className)
+        }
+      }
     }
 
     // Apply CSS filter to map tiles
