@@ -1,7 +1,7 @@
 /* CSS Custom Properties for easy theming */
 :root {
-  /* Primary colors */
-  --ltc-primary: #2196f3;
+  /* Primary colors - fallback to Leaflet defaults if available */
+  --ltc-primary: var(--leaflet-control-bg-color, #2196f3);
   --ltc-primary-dark: #1976d2;
   --ltc-primary-light: #64b5f6;
   --ltc-primary-bg: #e3f2fd;
@@ -9,15 +9,15 @@
   /* Success/Custom badge */
   --ltc-success: #4caf50;
 
-  /* Neutral colors - Light mode */
-  --ltc-bg: white;
-  --ltc-bg-hover: #f4f4f4;
+  /* Neutral colors - Light mode - with Leaflet fallbacks */
+  --ltc-bg: var(--leaflet-control-bg-color, white);
+  --ltc-bg-hover: var(--leaflet-control-hover-bg-color, #f4f4f4);
   --ltc-bg-secondary: #f5f5f5;
   --ltc-bg-tertiary: #e0e0e0;
-  --ltc-text: #333;
+  --ltc-text: var(--leaflet-control-text-color, #333);
   --ltc-text-secondary: #666;
   --ltc-text-tertiary: #aaa;
-  --ltc-border: #e0e0e0;
+  --ltc-border: var(--leaflet-control-border-color, #e0e0e0);
   --ltc-border-dark: #bbb;
 
   /* Component specific */
@@ -68,8 +68,6 @@
 
 .leaflet-theme-panel {
   position: absolute;
-  top: 60px;
-  right: 10px;
   width: 320px;
   max-width: calc(100vw - 20px);
   max-height: calc(100vh - 80px);
@@ -77,10 +75,44 @@
   background: var(--ltc-bg);
   border-radius: 8px;
   box-shadow: 0 4px 12px var(--ltc-shadow);
-  z-index: 1000;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   pointer-events: all;
   color: var(--ltc-text);
+}
+
+/* Position variants */
+.leaflet-theme-panel[data-position="topright"],
+.leaflet-theme-panel[data-position="topleft"] {
+  top: 60px;
+}
+
+.leaflet-theme-panel[data-position="bottomright"],
+.leaflet-theme-panel[data-position="bottomleft"] {
+  bottom: 20px;
+}
+
+.leaflet-theme-panel[data-position="topright"],
+.leaflet-theme-panel[data-position="bottomright"] {
+  right: 10px;
+}
+
+.leaflet-theme-panel[data-position="topleft"],
+.leaflet-theme-panel[data-position="bottomleft"] {
+  left: 10px;
+}
+
+/* Responsive positioning for small screens */
+/* Use higher specificity to override position classes without !important */
+@media (max-width: 480px) {
+  .leaflet-theme-panel.leaflet-theme-panel {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    width: calc(100vw - 40px);
+    max-height: calc(100vh - 100px);
+  }
 }
 
 /* Panel Header */
@@ -388,18 +420,37 @@
 /* Touch-friendly larger hit area */
 @media (hover: none) and (pointer: coarse) {
   .theme-editor-slider input[type="range"] {
-    height: 32px;
+    height: 40px; /* Größere Touch-Area */
+  }
+
+  .theme-editor-slider input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px; /* Größere Track */
   }
 
   .theme-editor-slider input[type="range"]::-webkit-slider-thumb {
-    width: 28px;
-    height: 28px;
-    margin-top: -10px;
+    width: 32px; /* Größerer Thumb */
+    height: 32px;
+    margin-top: -11px;
+  }
+
+  .theme-editor-slider input[type="range"]::-moz-range-track {
+    height: 10px;
   }
 
   .theme-editor-slider input[type="range"]::-moz-range-thumb {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Größere Buttons für Touch */
+  .theme-select-btn,
+  .theme-edit-btn {
+    min-height: 48px;
+  }
+
+  .control-style-btn {
+    min-height: 44px;
+    font-size: 14px;
   }
 }
 
