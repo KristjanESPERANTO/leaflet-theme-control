@@ -219,19 +219,21 @@ See [examples/api.html](examples/api.html) for a complete example.
 
 ### Options
 
-| Option              | Type     | Default                | Description                                                         |
-| ------------------- | -------- | ---------------------- | ------------------------------------------------------------------- |
-| `position`          | String   | `"topright"`           | Position of the control                                             |
-| `themes`            | Object   | `DEFAULT_THEMES`       | Theme definitions                                                   |
-| `defaultTheme`      | String   | `"light"`              | Initial theme                                                       |
-| `storageKey`        | String   | `"leaflet-theme"`      | localStorage key                                                    |
-| `detectSystemTheme` | Boolean  | `true`                 | Detect OS dark mode                                                 |
-| `cssSelector`       | String   | `".leaflet-tile-pane"` | Elements to apply filter to                                         |
-| `addButton`         | Boolean  | `true`                 | Add UI button to map (set to `false` for programmatic control only) |
-| `enableEditor`      | Boolean  | `false`                | Enable theme editor UI with customization sliders                   |
-| `onChange`          | Function | `null`                 | Callback on theme change: `(themeKey, theme) => {}`                 |
-| `getLabel`          | Function | `null`                 | Function to get translated theme labels: `(themeKey) => string`     |
-| `getEditorLabels`   | Function | `null`                 | Function to get translated editor UI labels: `(key) => string`      |
+| Option              | Type     | Default                | Description                                                                                                |
+| ------------------- | -------- | ---------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `position`          | String   | `"topright"`           | Position of the control                                                                                    |
+| `themes`            | Object   | `DEFAULT_THEMES`       | Theme definitions                                                                                          |
+| `defaultTheme`      | String   | `"light"`              | Initial theme                                                                                              |
+| `storageKey`        | String   | `"leaflet-theme"`      | localStorage key                                                                                           |
+| `detectSystemTheme` | Boolean  | `true`                 | Detect OS dark mode                                                                                        |
+| `cssSelector`       | String   | `".leaflet-tile-pane"` | Elements to apply filter to                                                                                |
+| `addButton`         | Boolean  | `true`                 | Add UI button to map (set to `false` for programmatic control only)                                        |
+| `enableEditor`      | Boolean  | `false`                | Enable theme editor UI with customization sliders                                                          |
+| `onChange`          | Function | `null`                 | Callback on theme change AND editor changes: `(themeKey, theme) => {}`                                     |
+| `getLabel`          | Function | `null`                 | Function to get translated theme labels: `(themeKey) => string` (optional if themes have `label` property) |
+| `getEditorLabels`   | Function | `null`                 | Function to get translated editor UI labels: `(key) => string`                                             |
+| `panelPosition`     | String   | `"topright"`           | Position of editor panel: `"topright"`, `"topleft"`, `"bottomright"`, `"bottomleft"`                       |
+| `panelZIndex`       | Number   | `1000`                 | Z-index for editor panel to avoid conflicts                                                                |
 
 ### Methods
 
