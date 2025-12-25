@@ -1,9 +1,22 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.0.2](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.0.1...v0.0.2) (2025-12-25)
+
+### Features
+
+- add panelPosition and panelZIndex options ([cabb053](https://github.com/kristjanesperanto/leaflet-theme-control/commit/cabb053526bf81b9a3979086e706e1fbccfdf6fe))
+- comprehensive editor improvements ([380e982](https://github.com/kristjanesperanto/leaflet-theme-control/commit/380e9822c772225f506fe9f75d61b25c839a53b2))
+- enhance mobile UX and CSS integration ([2c31288](https://github.com/kristjanesperanto/leaflet-theme-control/commit/2c31288f95a2e5fb90375eae92a440b70b9eeb10))
+
+### Documentation
+
+- update README with new options and improvements ([62efc73](https://github.com/kristjanesperanto/leaflet-theme-control/commit/62efc73be551131754343b25d0fd304ea077da55))
+
+### Chores
+
+- add .versionrc.json for versioning configuration ([799689c](https://github.com/kristjanesperanto/leaflet-theme-control/commit/799689cb02ec7f2a42a88f0c52ec43c029e1134f))
 
 ## [0.0.1] - 2024-12-25
 
