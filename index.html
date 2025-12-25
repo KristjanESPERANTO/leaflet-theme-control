@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leaflet Theme Control</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href='data:image/svg+xml,<svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M13 4c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm0 16V6c3.9 0 7 3.1 7 7s-3.1 7-7 7z" fill="%23333"/></svg>'
+    />
+    <style>
+      :root {
+        --bg: #0d1117;
+        --bg-subtle: #161b22;
+        --bg-elevated: #1c2128;
+        --text: #e6edf3;
+        --text-muted: #8b949e;
+        --link: #58a6ff;
+        --link-hover: #79c0ff;
+        --border: #30363d;
+        --accent: #238636;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        height: 100%;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font:
+          16px/1.6 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial,
+          sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      a {
+        color: var(--link);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      a:hover {
+        color: var(--link-hover);
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      header {
+        padding: 64px 0 48px;
+        background: linear-gradient(180deg, #262c36 0%, var(--bg) 100%);
+        position: relative;
+      }
+
+      .header-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        align-items: center;
+      }
+
+      h1 {
+        margin: 0 0 24px;
+        font-size: 48px;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        color: #ffffff;
+      }
+
+      .header-description {
+        color: var(--text-muted);
+        font-size: 17px;
+        line-height: 1.7;
+      }
+
+      .header-description p {
+        margin: 0 0 16px;
+      }
+
+      .header-description p:last-child {
+        margin-bottom: 0;
+      }
+
+      .hero {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .hero:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
+      }
+
+      .hero img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+
+      main {
+        padding-bottom: 80px;
+        flex: 1;
+      }
+
+      h2 {
+        margin: 0 0 32px;
+        font-size: 28px;
+        font-weight: 600;
+        text-align: center;
+        color: var(--text);
+      }
+
+      .demo-links {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        margin-bottom: 64px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .demo-link {
+        display: block;
+        padding: 24px 32px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        transition: all 0.2s ease;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+      }
+
+      .demo-link:hover {
+        border-color: var(--link);
+        background: rgba(88, 166, 255, 0.05);
+        transform: translateY(-2px);
+        color: var(--link-hover);
+      }
+
+      .demo-link-title {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 8px;
+      }
+
+      .demo-link-desc {
+        display: block;
+        font-size: 14px;
+        color: var(--text-muted);
+        font-weight: normal;
+      }
+
+      .reference-link {
+        display: block;
+        padding: 24px 32px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        transition: all 0.2s ease;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+        margin: 0 auto 16px;
+        max-width: 600px;
+      }
+
+      .reference-link:hover {
+        border-color: var(--link);
+        background: rgba(88, 166, 255, 0.05);
+        transform: translateY(-2px);
+        color: var(--link-hover);
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 64px;
+      }
+
+      .feature {
+        padding: 24px;
+        background: var(--bg-subtle);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+
+      .feature h3 {
+        margin: 0 0 12px;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .feature p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.6;
+      }
+
+      code {
+        background: rgba(110, 118, 129, 0.15);
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        font-family: "SF Mono", Monaco, "Cascadia Mono", "Roboto Mono", Consolas, monospace;
+      }
+
+      @media (max-width: 768px) {
+        .header-content {
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        h1 {
+          font-size: 36px;
+        }
+
+        header {
+          padding: 48px 0 32px;
+        }
+
+        .header-description {
+          font-size: 16px;
+        }
+
+        h2 {
+          font-size: 24px;
+          margin-bottom: 24px;
+        }
+
+        .features {
+          grid-template-columns: 1fr;
+        }
+
+        .demo-links {
+          grid-template-columns: 1fr;
+        }
+
+        .demo-link {
+          font-size: 16px;
+          padding: 20px 24px;
+        }
+      }
+
+      footer {
+        background: var(--bg-subtle);
+        border-top: 1px solid var(--border);
+        padding: 32px 0;
+        margin-top: auto;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        font-size: 14px;
+      }
+
+      .footer-links a {
+        color: var(--text-muted);
+        transition: color 0.2s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--link-hover);
+      }
+
+      .footer-separator {
+        color: var(--text-muted);
+        user-select: none;
+      }
+
+      @media (max-width: 600px) {
+        .footer-separator {
+          display: none;
+        }
+
+        .footer-links {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+    </style>
+    <meta
+      name="description"
+      content="A Leaflet control for switching between visual themes using CSS filters. Add dark mode, grayscale, and custom themes to your maps without multiple tile layers."
+    />
+    <link rel="canonical" href="." />
+    <meta property="og:title" content="Leaflet Theme Control" />
+    <meta
+      property="og:description"
+      content="A Leaflet control for switching between visual themes using CSS filters. Add dark mode, grayscale, and custom themes to your maps without multiple tile layers."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="container">
+          <div class="header-content">
+            <div class="header-left">
+              <h1>Leaflet Theme Control</h1>
+              <div class="header-description">
+                <p>
+                  A Leaflet control for switching between visual themes using CSS filters. Add dark mode, grayscale, and custom themes to your maps without requiring multiple tile
+                  layers or tile sources.
+                </p>
+              </div>
+            </div>
+            <div class="hero">
+              <img src="screenshot.png" alt="Leaflet Theme Control example screenshot" />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="container">
+        <h2>Interactive Demos</h2>
+        <div class="demo-links">
+          <a href="examples/basic.html" class="demo-link">
+            <span class="demo-link-title">🗺️ Basic Example</span>
+            <span class="demo-link-desc">Simple setup with default themes</span>
+          </a>
+          <a href="examples/editor.html" class="demo-link">
+            <span class="demo-link-title">🎨 Theme Editor</span>
+            <span class="demo-link-desc">Live editing with filter customization</span>
+          </a>
+          <a href="examples/api.html" class="demo-link">
+            <span class="demo-link-title">🔧 Programmatic API</span>
+            <span class="demo-link-desc">Custom UI with programmatic control</span>
+          </a>
+        </div>
+
+        <h2>Features</h2>
+        <div class="features">
+          <div class="feature">
+            <h3>🌓 Multiple Themes</h3>
+            <p>Built-in Light, Dark, Grayscale, and Custom themes. All customizable via CSS filters without loading additional map tiles.</p>
+          </div>
+          <div class="feature">
+            <h3>🎨 Theme Editor</h3>
+            <p>Interactive editor with instant live updates. Adjust brightness, contrast, saturation, hue, invert, sepia, and grayscale filters with intuitive sliders.</p>
+          </div>
+          <div class="feature">
+            <h3>👁️ Accessibility</h3>
+            <p>Multiple themes including dark mode for different viewing needs. Theme editor allows individual filter adjustments. ARIA labels for screen reader support.</p>
+          </div>
+          <div class="feature">
+            <h3>💾 Persistent Storage</h3>
+            <p>Saves user preferences to localStorage. Automatically restores theme on page load. Supports custom storage keys for multiple maps.</p>
+          </div>
+          <div class="feature">
+            <h3>🔍 System Detection</h3>
+            <p>Automatically detects OS dark mode preference using <code>prefers-color-scheme</code>. Falls back to default theme if no preference detected.</p>
+          </div>
+          <div class="feature">
+            <h3>🌍 i18n Ready</h3>
+            <p>Fully translatable with <code>getLabel</code> and <code>getEditorLabels</code> callbacks. Perfect for multi-language applications.</p>
+          </div>
+          <div class="feature">
+            <h3>🎯 Flexible Styling</h3>
+            <p>Use <code>className</code> for theme-based CSS styling or <code>applyToSelectors</code> to apply filters to other DOM elements beyond the map.</p>
+          </div>
+          <div class="feature">
+            <h3>🔧 Programmatic API</h3>
+            <p>Full control with <code>setTheme()</code>, <code>getCurrentTheme()</code>, and <code>editor.open()</code>. Use <code>addButton: false</code> for custom UI.</p>
+          </div>
+          <div class="feature">
+            <h3>⚡ Performance</h3>
+            <p>Instant theme switching without reloading tiles. CSS filters applied directly to the map container. Zero network requests for theme changes.</p>
+          </div>
+          <div class="feature">
+            <h3>🪶 Lightweight</h3>
+            <p>No dependencies beyond Leaflet. Pure ES6 modules with clean, modern code. Minimal footprint, maximum functionality.</p>
+          </div>
+          <div class="feature">
+            <h3>📦 Modern Build</h3>
+            <p>ES6 module exports with named imports. Works with modern bundlers, Rollup, Webpack, and Import Maps. TypeScript types included.</p>
+          </div>
+          <div class="feature">
+            <h3>🌐 Modern Standards</h3>
+            <p>Built for Leaflet 2.x and modern browsers with CSS filter support. Clean, future-focused implementation.</p>
+          </div>
+        </div>
+
+        <h2>References</h2>
+        <a href="https://veggiekarte.de/" target="_blank" rel="noopener" class="reference-link"> 🥗 Veggiekarte – Map of vegetarian and vegan locations → </a>
+        <p style="text-align: center; color: var(--text-muted); font-size: 15px; margin-bottom: 64px">
+          Does your open-source project use this plugin?
+          <a href="https://github.com/piratenpanda/leaflet-theme-control/issues" target="_blank" rel="noopener">Let us know</a> and we'll add it here!
+        </p>
+      </main>
+
+      <footer>
+        <div class="container">
+          <div class="footer-content">
+            <div class="footer-links">
+              <a href="https://www.npmjs.com/package/leaflet-theme-control" target="_blank" rel="noopener">📦 npm</a>
+              <span class="footer-separator">•</span>
+              <a href="https://github.com/piratenpanda/leaflet-theme-control" target="_blank" rel="noopener">📚 GitHub</a>
+              <span class="footer-separator">•</span>
+              <a href="README.md" target="_blank" rel="noopener">📖 Documentation</a>
+              <span class="footer-separator">•</span>
+              <a href="LICENSE.md" target="_blank" rel="noopener">⚖️ MIT License</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,503 @@
+/* CSS Custom Properties for easy theming */
+:root {
+  /* Primary colors */
+  --ltc-primary: #2196f3;
+  --ltc-primary-dark: #1976d2;
+  --ltc-primary-light: #64b5f6;
+  --ltc-primary-bg: #e3f2fd;
+
+  /* Success/Custom badge */
+  --ltc-success: #4caf50;
+
+  /* Neutral colors - Light mode */
+  --ltc-bg: white;
+  --ltc-bg-hover: #f4f4f4;
+  --ltc-bg-secondary: #f5f5f5;
+  --ltc-bg-tertiary: #e0e0e0;
+  --ltc-text: #333;
+  --ltc-text-secondary: #666;
+  --ltc-text-tertiary: #aaa;
+  --ltc-border: #e0e0e0;
+  --ltc-border-dark: #bbb;
+
+  /* Component specific */
+  --ltc-shadow: rgba(0, 0, 0, 0.15);
+  --ltc-slider-track: #e0e0e0;
+  --ltc-slider-thumb-shadow: rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode custom properties */
+:root[data-control-style="dark"] {
+  --ltc-bg: #2d2d2d;
+  --ltc-bg-hover: #404040;
+  --ltc-bg-secondary: #3a3a3a;
+  --ltc-bg-tertiary: #454545;
+  --ltc-text: #e0e0e0;
+  --ltc-text-secondary: #aaa;
+  --ltc-text-tertiary: #666;
+  --ltc-border: #404040;
+  --ltc-border-dark: #555;
+  --ltc-primary-bg: #1e3a5f;
+  --ltc-primary-light: #90caf9;
+  --ltc-slider-track: #404040;
+  --ltc-bg-overlay: rgba(45, 45, 45, 0.95);
+  --ltc-bg-overlay-hover: rgba(60, 60, 60, 0.95);
+  --ltc-bg-overlay-disabled: rgba(35, 35, 35, 0.95);
+  --ltc-bg-overlay-light: rgba(45, 45, 45, 0.9);
+  --ltc-bg-overlay-scale: rgba(45, 45, 45, 0.8);
+}
+
+/* Theme Control Button */
+
+.leaflet-control-theme-button {
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  border: none;
+  background: var(--ltc-bg);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.leaflet-control-theme-button:hover {
+  background: var(--ltc-bg-hover);
+}
+
+/* Theme Panel Styles */
+
+.leaflet-theme-panel {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  width: 320px;
+  max-width: calc(100vw - 20px);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  background: var(--ltc-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--ltc-shadow);
+  z-index: 1000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  pointer-events: all;
+  color: var(--ltc-text);
+}
+
+/* Panel Header */
+.theme-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid var(--ltc-border);
+}
+
+.theme-panel-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  flex: 1;
+  text-align: center;
+}
+
+.theme-panel-back,
+.theme-panel-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ltc-text-secondary);
+  border-radius: 4px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.theme-panel-back {
+  margin-right: 8px;
+}
+
+.theme-panel-close {
+  margin-left: 8px;
+  font-size: 24px;
+}
+
+.theme-panel-back:hover,
+.theme-panel-close:hover {
+  background: var(--ltc-bg-secondary);
+  color: var(--ltc-text);
+}
+
+.theme-panel-back:focus,
+.theme-panel-close:focus {
+  outline: 2px solid var(--ltc-primary);
+  outline-offset: 2px;
+}
+
+/* Panel Body */
+.theme-panel-body {
+  padding: 10px;
+}
+
+/* Theme Selector */
+.theme-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.theme-row.active .theme-select-btn {
+  background: var(--ltc-primary-bg);
+  border-color: var(--ltc-primary);
+}
+
+.theme-select-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 2px solid var(--ltc-border);
+  background: var(--ltc-bg);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  text-align: left;
+}
+
+.theme-select-btn:hover {
+  background: var(--ltc-bg-secondary);
+  border-color: var(--ltc-border-dark);
+}
+
+.theme-select-btn:focus {
+  outline: 2px solid var(--ltc-primary);
+  outline-offset: 2px;
+}
+
+.theme-row.active .theme-select-btn:hover {
+  background: var(--ltc-primary-bg);
+  border-color: var(--ltc-primary);
+}
+
+.theme-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.theme-name {
+  flex: 1;
+  font-weight: 500;
+  color: var(--ltc-text);
+}
+
+.theme-custom-badge {
+  font-size: 11px;
+  padding: 2px 6px;
+  background: var(--ltc-success);
+  color: white;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.theme-active-badge {
+  font-size: 16px;
+  color: var(--ltc-primary);
+}
+
+.theme-edit-btn {
+  width: 36px;
+  height: 44px;
+  border: none;
+  background: var(--ltc-bg-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-edit-btn:hover {
+  background: var(--ltc-border);
+}
+
+.theme-edit-btn:focus {
+  outline: 2px solid var(--ltc-primary);
+  outline-offset: 2px;
+}
+
+/* Theme Editor Sliders */
+.theme-editor-sliders {
+  padding: 15px;
+}
+
+/* Control Style Selector */
+.control-style-selector {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ltc-border);
+}
+
+.control-style-selector label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ltc-text);
+  margin-bottom: 8px;
+}
+
+.control-style-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.control-style-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid var(--ltc-border);
+  background: var(--ltc-bg);
+  color: var(--ltc-text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.control-style-btn:hover {
+  background: var(--ltc-bg-secondary);
+  border-color: var(--ltc-border-dark);
+}
+
+.control-style-btn.active {
+  background: var(--ltc-primary-bg);
+  border-color: var(--ltc-primary);
+  color: var(--ltc-primary-dark);
+}
+
+.control-style-btn:focus {
+  outline: 2px solid var(--ltc-primary);
+  outline-offset: 2px;
+}
+
+.theme-editor-slider {
+  margin-bottom: 16px;
+}
+
+.theme-editor-slider:last-child {
+  margin-bottom: 0;
+}
+
+.theme-editor-slider label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.slider-label {
+  font-weight: 500;
+  color: var(--ltc-text);
+}
+
+.slider-value {
+  color: var(--ltc-text-secondary);
+  font-family: monospace;
+  font-size: 12px;
+  min-width: 50px;
+  text-align: right;
+}
+
+.theme-editor-slider input[type="range"] {
+  width: 100%;
+  height: 24px;
+  border-radius: 12px;
+  background: transparent;
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.theme-editor-slider input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  background: var(--ltc-slider-track);
+  border-radius: 4px;
+}
+
+.theme-editor-slider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ltc-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: -6px;
+  box-shadow: 0 2px 4px var(--ltc-slider-thumb-shadow);
+}
+
+.theme-editor-slider input[type="range"]::-webkit-slider-thumb:hover {
+  background: var(--ltc-primary-dark);
+  transform: scale(1.15);
+}
+
+.theme-editor-slider input[type="range"]:focus {
+  outline: none;
+}
+
+.theme-editor-slider input[type="range"]:focus::-webkit-slider-thumb {
+  outline: 2px solid var(--ltc-primary);
+  outline-offset: 2px;
+}
+
+.theme-editor-slider input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 8px;
+  background: var(--ltc-slider-track);
+  border-radius: 4px;
+}
+
+.theme-editor-slider input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ltc-primary);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px var(--ltc-slider-thumb-shadow);
+}
+
+.theme-editor-slider input[type="range"]::-moz-range-thumb:hover {
+  background: var(--ltc-primary-dark);
+  transform: scale(1.15);
+}
+
+.theme-editor-slider input[type="range"]:focus::-moz-range-thumb {
+  outline: 2px solid var(--ltc-primary);
+  outline-offset: 2px;
+}
+
+/* Touch-friendly larger hit area */
+@media (hover: none) and (pointer: coarse) {
+  .theme-editor-slider input[type="range"] {
+    height: 32px;
+  }
+
+  .theme-editor-slider input[type="range"]::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+    margin-top: -10px;
+  }
+
+  .theme-editor-slider input[type="range"]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Panel Footer */
+.theme-panel-footer {
+  padding: 15px;
+  border-top: 1px solid var(--ltc-border);
+}
+
+.theme-panel-footer button {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.theme-editor-reset {
+  background: var(--ltc-bg-secondary);
+  color: var(--ltc-text-secondary);
+}
+
+.theme-editor-reset:hover {
+  background: var(--ltc-border);
+  color: var(--ltc-text);
+}
+
+.theme-editor-reset:focus {
+  outline: 2px solid var(--ltc-primary);
+  outline-offset: 2px;
+}
+
+/* Leaflet Controls - adapt to control style */
+
+/* Theme Control Button */
+:root[data-control-style="dark"] .leaflet-control-theme-button {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* All Leaflet controls */
+:root[data-control-style="dark"] .leaflet-bar,
+:root[data-control-style="dark"] .leaflet-control-layers,
+:root[data-control-style="dark"] .leaflet-control-scale {
+  background: var(--ltc-bg-overlay);
+  border-color: var(--ltc-border-dark);
+}
+
+/* Zoom buttons and other bar buttons */
+:root[data-control-style="dark"] .leaflet-bar a,
+:root[data-control-style="dark"] .leaflet-control-layers-toggle {
+  background: var(--ltc-bg-overlay);
+  color: var(--ltc-text);
+  border-color: var(--ltc-border-dark);
+}
+
+:root[data-control-style="dark"] .leaflet-bar a:hover,
+:root[data-control-style="dark"] .leaflet-control-layers-toggle:hover {
+  background: var(--ltc-bg-overlay-hover);
+  color: white;
+}
+
+:root[data-control-style="dark"] .leaflet-bar a.leaflet-disabled {
+  background: var(--ltc-bg-overlay-disabled);
+  color: var(--ltc-text-tertiary);
+}
+
+/* Layers control */
+:root[data-control-style="dark"] .leaflet-control-layers-expanded {
+  background: var(--ltc-bg-overlay);
+  color: var(--ltc-text);
+}
+
+:root[data-control-style="dark"] .leaflet-control-layers-separator {
+  border-color: var(--ltc-border-dark);
+}
+
+/* Scale control */
+:root[data-control-style="dark"] .leaflet-control-scale-line {
+  background: var(--ltc-bg-overlay-scale);
+  border-color: var(--ltc-text);
+  color: var(--ltc-text);
+}
+
+/* Attribution control */
+:root[data-control-style="dark"] .leaflet-control-attribution {
+  background: var(--ltc-bg-overlay-light);
+  color: var(--ltc-text);
+}
+
+:root[data-control-style="dark"] .leaflet-control-attribution a {
+  color: var(--ltc-primary-light);
+}
+
+:root[data-control-style="dark"] .leaflet-control-attribution a:hover {
+  color: var(--ltc-primary-light);
+  filter: brightness(1.1);
+}

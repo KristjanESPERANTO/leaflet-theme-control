@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaflet Theme Control - Programmatic API</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href='data:image/svg+xml,<svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M13 4c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm0 16V6c3.9 0 7 3.1 7 7s-3.1 7-7 7z" fill="%23333"/></svg>'
+    />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.css" />
+
+    <!-- Theme Control CSS -->
+    <link rel="stylesheet" href="../src/leaflet-theme-control.css" />
+
+    <!-- Import Map for ES Modules -->
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.js"
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #map {
+        width: calc(100% - 360px);
+        height: 100%;
+        transition: width 0.3s ease;
+      }
+
+      body.sidebar-collapsed #map {
+        width: calc(100% - 20px);
+      }
+
+      .custom-controls {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 320px;
+        height: 100vh;
+        background: white;
+        padding: 60px 20px 20px 20px; /* Top padding für Toggle-Button */
+        overflow-y: auto;
+        border-left: 1px solid #e0e0e0;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+      }
+
+      .custom-controls.collapsed {
+        transform: translateX(340px);
+      }
+
+      .custom-controls h3 {
+        margin: 0 0 15px 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .toggle-sidebar {
+        position: absolute;
+        left: -15px;
+        top: 10px;
+        width: 20px;
+        height: 40px;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-right: none;
+        border-radius: 6px 0 0 6px;
+        cursor: pointer;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s;
+        z-index: 1;
+      }
+
+      .toggle-sidebar:hover {
+        background: #f5f5f5;
+      }
+
+      /* Theme-based sidebar styling */
+      .theme-dark .custom-controls {
+        background: #2d2d2d;
+        color: #e0e0e0;
+        border-left-color: #555;
+      }
+
+      .theme-dark .custom-controls h3 {
+        color: #fff;
+      }
+
+      .theme-dark .custom-controls p {
+        color: #aaa;
+      }
+
+      .theme-dark .custom-controls button {
+        background: #3a3a3a;
+        border-color: #555;
+        color: #e0e0e0;
+      }
+
+      .theme-dark .custom-controls button:hover {
+        background: #454545;
+        border-color: #2196f3;
+      }
+
+      .theme-dark .custom-controls button.active {
+        background: #1e3a5f;
+        border-color: #2196f3;
+        color: #90caf9;
+      }
+
+      .theme-dark .custom-controls code {
+        background: #3a3a3a;
+        color: #ff6b6b;
+      }
+
+      .theme-dark .toggle-sidebar {
+        background: #2d2d2d;
+        color: #e0e0e0;
+        border-color: #555;
+      }
+
+      .theme-dark .toggle-sidebar:hover {
+        background: #3a3a3a;
+      }
+
+      .theme-grayscale .custom-controls {
+        filter: grayscale(1);
+      }
+
+      .theme-custom .custom-controls {
+        background: #2d2d2d;
+        color: #e0e0e0;
+        filter: sepia(0.3);
+      }
+
+      .custom-controls p {
+        margin: 0 0 20px 0;
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+      }
+
+      .custom-controls button {
+        display: block;
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+      }
+
+      .custom-controls button:hover {
+        background: #f5f5f5;
+        border-color: #2196f3;
+      }
+
+      .custom-controls button:active {
+        transform: scale(0.98);
+      }
+
+      .custom-controls button.active {
+        background: #e3f2fd;
+        border-color: #2196f3;
+        color: #1976d2;
+        font-weight: 500;
+      }
+
+      .custom-controls .divider {
+        height: 1px;
+        background: #e0e0e0;
+        margin: 20px 0;
+      }
+
+      .custom-controls code {
+        display: block;
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        margin-top: 15px;
+        color: #d32f2f;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div class="custom-controls">
+      <button class="toggle-sidebar" id="toggle-sidebar" aria-label="Toggle sidebar">▶</button>
+
+      <h3>🎛️ Custom Theme Controls</h3>
+      <p>This demo shows programmatic API usage without the default control button.</p>
+
+      <button id="btn-light" data-theme="light">☀️ Light Theme</button>
+      <button id="btn-dark" data-theme="dark">🌙 Dark Theme</button>
+      <button id="btn-grayscale" data-theme="grayscale">⚫ Grayscale</button>
+      <button id="btn-custom" data-theme="custom">🎨 Custom</button>
+
+      <div class="divider"></div>
+
+      <button id="btn-editor">⚙️ Open Theme Panel (with editor)</button>
+
+      <code>addButton: false</code>
+    </div>
+
+    <script type="module">
+      import { Map, TileLayer } from "leaflet";
+      import { ThemeControl } from "../src/leaflet-theme-control.js";
+
+      // Create map
+      const map = new Map("map", {
+        center: [51.505, -0.09],
+        zoom: 13
+      });
+
+      // Add tile layer
+      new TileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+        maxZoom: 19
+      }).addTo(map);
+
+      // Get DOM elements first
+      const buttons = document.querySelectorAll("[data-theme]");
+      const editorBtn = document.getElementById("btn-editor");
+      const sidebar = document.querySelector(".custom-controls");
+      const toggleBtn = document.getElementById("toggle-sidebar");
+
+      // Define update function
+      function updateActiveButton(themeKey) {
+        buttons.forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.theme === themeKey);
+        });
+      }
+
+      // Toggle sidebar
+      toggleBtn.addEventListener("click", () => {
+        const isCollapsed = sidebar.classList.toggle("collapsed");
+        document.body.classList.toggle("sidebar-collapsed", isCollapsed);
+        toggleBtn.textContent = isCollapsed ? "◀" : "▶";
+        toggleBtn.setAttribute("aria-label", isCollapsed ? "Open sidebar" : "Close sidebar");
+
+        // Trigger Leaflet to recalculate map size
+        setTimeout(() => map.invalidateSize(), 300);
+      });
+
+      // Add theme control WITHOUT button (programmatic control only)
+      const themeControl = new ThemeControl({
+        addButton: false, // No UI button
+        enableEditor: true, // Editor still available
+        themes: {
+          light: {
+            label: "Light",
+            filter: "",
+            icon: "☀️",
+            controlStyle: "light",
+            className: "theme-light"
+          },
+          dark: {
+            label: "Dark",
+            filter: "invert(1) hue-rotate(180deg) saturate(0.6) brightness(0.5)",
+            icon: "🌙",
+            controlStyle: "dark",
+            className: "theme-dark"
+          },
+          grayscale: {
+            label: "Grayscale",
+            filter: "grayscale(1)",
+            icon: "⚫",
+            controlStyle: "light",
+            className: "theme-grayscale"
+          },
+          custom: {
+            label: "Custom",
+            filter: "invert(1) hue-rotate(180deg) saturate(1) brightness(1) contrast(1) sepia(0.5) grayscale(0.5)",
+            icon: "🎨",
+            controlStyle: "dark",
+            className: "theme-custom"
+          }
+        },
+        onChange: (theme) => {
+          console.log("Theme changed to:", theme);
+          updateActiveButton(theme);
+        }
+      });
+
+      map.addControl(themeControl);
+
+      // Initialize active state
+      updateActiveButton(themeControl.getCurrentTheme());
+
+      // Theme selection via custom buttons
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const theme = btn.dataset.theme;
+          themeControl.setTheme(theme);
+        });
+      });
+
+      // Open/close editor via custom button (toggle)
+      editorBtn.addEventListener("click", () => {
+        if (themeControl.editor.isOpen) {
+          themeControl.editor.close();
+        } else {
+          themeControl.editor.open();
+        }
+      });
+
+      // Example: Programmatic theme change after 3 seconds
+      setTimeout(() => {
+        console.log("Auto-switching to dark theme...");
+        themeControl.setTheme("dark");
+      }, 3000);
+    </script>
+  </body>
+</html>
