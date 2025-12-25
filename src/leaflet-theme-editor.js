@@ -402,14 +402,9 @@ export class ThemeEditor {
     // Get current filter values or defaults
     const filterValues = this.customFilters[themeKey] || this._parseFilterString(theme.filter)
 
-    // Get control style preference
-    let controlStyle = 'light'
-    if (this.customFilters[themeKey]?.controlStyle) {
-      controlStyle = this.customFilters[themeKey].controlStyle
-    }
-    else if (theme.controlStyle) {
-      controlStyle = theme.controlStyle
-    }
+    // Get control style preference - always start fresh from theme
+    // Don't check customFilters first, as it may have stale data
+    const controlStyle = theme.controlStyle || 'light'
 
     // Build panel structure
     const header = this._createPanelHeader(`${this._getLabel('customize')}: ${themeLabel}`, true)
@@ -594,33 +589,37 @@ export class ThemeEditor {
     delete this.customFilters[themeKey]
     this._saveCustomFilters()
 
-    // Restore default values from DEFAULT_THEMES
+    // Restore default filter and controlStyle from DEFAULT_THEMES
+    // but KEEP user-defined properties like applyToSelectors
     const defaultTheme = DEFAULT_THEMES[themeKey]
+    const currentTheme = this.themeControl.options.themes[themeKey]
 
-    if (defaultTheme) {
-      // Copy all properties from default theme
-      this.themeControl.options.themes[themeKey] = { ...defaultTheme }
+    if (defaultTheme && currentTheme) {
+      // Only reset the editable properties (filter, controlStyle)
+      // Keep other properties like applyToSelectors, icon, label, className
+      currentTheme.filter = defaultTheme.filter
+      currentTheme.controlStyle = defaultTheme.controlStyle
+    }
+    else if (!currentTheme) {
+      // Theme doesn't exist - this shouldn't happen
+      console.warn(`Theme "${themeKey}" not found`)
+      return
     }
     else {
-      // For custom themes not in DEFAULT_THEMES, reset to parsed filter values
-      // This handles user-defined themes that don't have a default
-      const theme = this.themeControl.options.themes[themeKey]
-      if (theme) {
-        // Keep the theme but clear any custom modifications by re-parsing
-        // the original filter (which may still be modified, so this is a no-op for custom themes)
-        console.warn(`Theme "${themeKey}" has no default in DEFAULT_THEMES, cannot fully reset`)
-      }
+      // For custom themes not in DEFAULT_THEMES, we can't reset
+      console.warn(`Theme "${themeKey}" has no default in DEFAULT_THEMES, cannot reset filter values`)
     }
 
-    // Reapply theme (including controlStyle) BEFORE re-rendering editor
-    // This ensures the DOM attribute is set correctly first
+    // Reapply theme if it's currently active
+    // Use setTheme to ensure proper application
     if (this.themeControl.getCurrentTheme() === themeKey) {
-      this.themeControl._applyTheme(themeKey, false)
+      this.themeControl.setTheme(themeKey)
     }
-
-    // Fire onChange callback for reset
-    if (this.themeControl.options.onChange) {
-      this.themeControl.options.onChange(themeKey, this.themeControl.options.themes[themeKey])
+    else {
+      // Fire onChange callback even if theme is not currently active
+      if (this.themeControl.options.onChange) {
+        this.themeControl.options.onChange(themeKey, this.themeControl.options.themes[themeKey])
+      }
     }
 
     // Re-render editor panel with default values

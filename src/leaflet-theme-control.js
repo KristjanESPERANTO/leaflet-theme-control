@@ -33,8 +33,18 @@ export class ThemeControl extends Control {
   initialize(options) {
     Util.setOptions(this, options)
 
-    // Create a deep copy of DEFAULT_THEMES to avoid mutating the original
-    if (!this.options.themes) {
+    // Create deep copies of themes to avoid mutating DEFAULT_THEMES
+    // This is necessary because spread operator only does shallow copies
+    if (this.options.themes) {
+      // User provided custom themes - create deep copies of each theme
+      const themesCopy = {}
+      Object.keys(this.options.themes).forEach((key) => {
+        themesCopy[key] = { ...this.options.themes[key] }
+      })
+      this.options.themes = themesCopy
+    }
+    else {
+      // No themes provided - use copies of DEFAULT_THEMES
       this.options.themes = {}
       Object.keys(DEFAULT_THEMES).forEach((key) => {
         this.options.themes[key] = { ...DEFAULT_THEMES[key] }
