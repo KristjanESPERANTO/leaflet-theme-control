@@ -106,6 +106,11 @@ export class ThemeEditor {
     panel.setAttribute('aria-modal', 'true')
     panel.setAttribute('aria-labelledby', 'theme-panel-title')
 
+    // Apply position and z-index from options
+    const position = this.themeControl.options.panelPosition || 'topright'
+    panel.setAttribute('data-position', position)
+    panel.style.zIndex = this.themeControl.options.panelZIndex || 1000
+
     // Prevent map interactions when using the panel
     DomEvent.disableClickPropagation(panel)
     DomEvent.disableScrollPropagation(panel)
@@ -201,6 +206,37 @@ export class ThemeEditor {
     document.removeEventListener('keydown', this._onKeyDown)
   }
 
+  _isThemeModified(themeKey) {
+    // Check if theme has custom filters saved
+    if (!this.customFilters[themeKey]) {
+      return false
+    }
+
+    // Get default theme from DEFAULT_THEMES
+    const defaultTheme = DEFAULT_THEMES[themeKey]
+    if (!defaultTheme) {
+      // Custom theme not in defaults - consider it modified
+      return true
+    }
+
+    // Parse default filter and compare with custom
+    const defaultValues = this._parseFilterString(defaultTheme.filter)
+    const customValues = this.customFilters[themeKey]
+
+    // Check if any filter value differs from default
+    const filterKeys = ['invert', 'hueRotate', 'saturate', 'brightness', 'contrast', 'sepia', 'grayscale']
+    const filtersModified = filterKeys.some((key) => {
+      const defaultVal = defaultValues[key]
+      const customVal = customValues[key] !== undefined ? customValues[key] : defaultVal
+      return Math.abs(customVal - defaultVal) > 0.01 // Use small epsilon for float comparison
+    })
+
+    // Check if control style differs
+    const controlStyleModified = customValues.controlStyle && customValues.controlStyle !== defaultTheme.controlStyle
+
+    return filtersModified || controlStyleModified
+  }
+
   cleanup() {
     // Close panel if open
     if (this.isOpen) {
@@ -273,7 +309,7 @@ export class ThemeEditor {
   }
 
   _createThemeRow(themeKey, theme, isActive) {
-    const hasCustom = !!this.customFilters[themeKey]
+    const hasCustom = this._isThemeModified(themeKey)
     const themeLabel = this.themeControl._getThemeLabel(themeKey)
 
     // Create select button with icon, label and badges
@@ -321,7 +357,7 @@ export class ThemeEditor {
 
     // Theme select buttons
     const selectBtns = this.panel.querySelectorAll('.theme-select-btn')
-    selectBtns.forEach((btn) => {
+    selectBtns.forEach((btn, index) => {
       DomEvent.on(btn, 'click', (e) => {
         const themeKey = e.currentTarget.dataset.theme
 
@@ -331,6 +367,20 @@ export class ThemeEditor {
 
         this.themeControl.setTheme(themeKey)
         this.close()
+      })
+
+      // Keyboard navigation for theme buttons
+      DomEvent.on(btn, 'keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault()
+          const nextIndex = (index + 1) % selectBtns.length
+          selectBtns[nextIndex].focus()
+        }
+        else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault()
+          const prevIndex = (index - 1 + selectBtns.length) % selectBtns.length
+          selectBtns[prevIndex].focus()
+        }
       })
     })
 
@@ -532,6 +582,11 @@ export class ThemeEditor {
     if (this.themeControl.getCurrentTheme() === themeKey) {
       this.themeControl.setTheme(themeKey)
     }
+
+    // Fire onChange callback for editor changes
+    if (this.themeControl.options.onChange) {
+      this.themeControl.options.onChange(themeKey, this.themeControl.options.themes[themeKey])
+    }
   }
 
   _resetTheme(themeKey) {
@@ -546,11 +601,26 @@ export class ThemeEditor {
       // Copy all properties from default theme
       this.themeControl.options.themes[themeKey] = { ...defaultTheme }
     }
+    else {
+      // For custom themes not in DEFAULT_THEMES, reset to parsed filter values
+      // This handles user-defined themes that don't have a default
+      const theme = this.themeControl.options.themes[themeKey]
+      if (theme) {
+        // Keep the theme but clear any custom modifications by re-parsing
+        // the original filter (which may still be modified, so this is a no-op for custom themes)
+        console.warn(`Theme "${themeKey}" has no default in DEFAULT_THEMES, cannot fully reset`)
+      }
+    }
 
     // Reapply theme (including controlStyle) BEFORE re-rendering editor
     // This ensures the DOM attribute is set correctly first
     if (this.themeControl.getCurrentTheme() === themeKey) {
       this.themeControl._applyTheme(themeKey, false)
+    }
+
+    // Fire onChange callback for reset
+    if (this.themeControl.options.onChange) {
+      this.themeControl.options.onChange(themeKey, this.themeControl.options.themes[themeKey])
     }
 
     // Re-render editor panel with default values
