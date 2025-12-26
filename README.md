@@ -8,13 +8,13 @@ A Leaflet control for switching between visual themes using CSS filters. Perfect
 
 - **Multiple themes**: Light, Dark, Grayscale, Custom
 - **Theme Editor**: Customize filters with live preview sliders (optional)
-- ♿ **Accessibility**: Adaptable themes for better visibility
+- **Accessibility**: Adaptable themes for better visibility
 - **CSS Filters**: No need for multiple tile sources
 - **Persistent**: Saves user preference in localStorage
 - **System Detection**: Automatically detects OS dark mode preference
 - **i18n Ready**: Customizable labels with auto-update on language change
 - **Lightweight**: Zero dependencies (except Leaflet)
-- ⚡ **Performance**: Instant theme switching without reloading tiles
+- **Performance**: Instant theme switching without reloading tiles
 
 ## Installation
 
