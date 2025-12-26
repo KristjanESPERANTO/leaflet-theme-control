@@ -40,7 +40,7 @@
   "bugs": {
     "url": "https://github.com/kristjanesperanto/leaflet-theme-control/issues"
   },
-  "homepage": "https://github.com/kristjanesperanto/leaflet-theme-control#readme",
+  "homepage": "https://kristjanesperanto.github.io/leaflet-theme-control/",
   "peerDependencies": {
     "leaflet": ">=2.0.0-alpha.1"
   },
