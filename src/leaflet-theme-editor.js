@@ -332,20 +332,23 @@ export class ThemeEditor {
       selectBtn.appendChild(this._el('span', { 'className': 'theme-active-badge', 'aria-hidden': 'true' }, '✓'))
     }
 
-    // Create edit button
-    const editBtn = this._el('button', {
-      'className': 'theme-edit-btn',
-      'data-theme': themeKey,
-      'aria-label': `${this._getLabel('customizeTheme')}: ${themeLabel}`,
-    }, '⚙️')
-
     // Create row container
     const row = this._el('div', {
       'className': `theme-row ${isActive ? 'active' : ''}`,
       'data-theme': themeKey,
     })
     row.appendChild(selectBtn)
-    row.appendChild(editBtn)
+
+    // Only show edit button for the active theme
+    // User needs to see the theme to edit it meaningfully
+    if (isActive) {
+      const editBtn = this._el('button', {
+        'className': 'theme-edit-btn',
+        'data-theme': themeKey,
+        'aria-label': `${this._getLabel('customizeTheme')}: ${themeLabel}`,
+      }, '⚙️')
+      row.appendChild(editBtn)
+    }
 
     return row
   }
