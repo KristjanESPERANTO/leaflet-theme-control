@@ -6,13 +6,14 @@ A Leaflet control for switching between visual themes using CSS filters. Perfect
 
 ## Features
 
-- 🌓 **Multiple themes**: Light, Dark, Grayscale, Custom
+- **Multiple themes**: Light, Dark, Grayscale, Custom
+- **Theme Editor**: Customize filters with live preview sliders (optional)
 - ♿ **Accessibility**: Adaptable themes for better visibility
-- 🎨 **CSS Filters**: No need for multiple tile sources
-- 💾 **Persistent**: Saves user preference in localStorage
-- 🔍 **System Detection**: Automatically detects OS dark mode preference
-- 🌍 **i18n Ready**: Customizable labels via callback function
-- 🪶 **Lightweight**: Zero dependencies (except Leaflet)
+- **CSS Filters**: No need for multiple tile sources
+- **Persistent**: Saves user preference in localStorage
+- **System Detection**: Automatically detects OS dark mode preference
+- **i18n Ready**: Customizable labels with auto-update on language change
+- **Lightweight**: Zero dependencies (except Leaflet)
 - ⚡ **Performance**: Instant theme switching without reloading tiles
 
 ## Installation
@@ -33,12 +34,13 @@ import "leaflet-theme-control/src/leaflet-theme-control.css";
 **Without bundler (plain HTML):**
 
 ```html
-<link rel="stylesheet" href="node_modules/leaflet-theme-control/src/leaflet-theme-control.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-theme-control/src/leaflet-theme-control.css" />
 
 <script type="importmap">
   {
     "imports": {
-      "leaflet-theme-control": "./node_modules/leaflet-theme-control/src/leaflet-theme-control.js"
+      "leaflet": "https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.js",
+      "leaflet-theme-control": "https://unpkg.com/leaflet-theme-control/src/leaflet-theme-control.js"
     }
   }
 </script>
@@ -47,38 +49,6 @@ import "leaflet-theme-control/src/leaflet-theme-control.css";
   import { ThemeControl } from "leaflet-theme-control";
   // Your code here
 </script>
-```
-
-**Or via CDN (coming soon):**
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/leaflet-theme-control/src/leaflet-theme-control.css" />
-
-<script type="importmap">
-  {
-    "imports": {
-      "leaflet-theme-control": "https://unpkg.com/leaflet-theme-control/src/leaflet-theme-control.js"
-    }
-  }
-</script>
-
-<script type="module">
-  import { ThemeControl } from "leaflet-theme-control";
-</script>
-```
-
-### As local module (development)
-
-**HTML:**
-
-```html
-<link rel="stylesheet" href="./third-party/leaflet-theme-control/src/leaflet-theme-control.css" />
-```
-
-**JavaScript:**
-
-```javascript
-import { ThemeControl } from "./third-party/leaflet-theme-control/src/leaflet-theme-control.js";
 ```
 
 ## Usage
@@ -209,7 +179,7 @@ console.log(themeControl.getCurrentTheme()); // "dark"
 
 // Open editor from custom button
 myCustomButton.onclick = () => {
-  themeControl.editor.open();
+  themeControl.editor.openThemeSelector();
 };
 ```
 
@@ -237,17 +207,18 @@ See [examples/api.html](examples/api.html) for a complete example.
 
 ### Methods
 
-| Method               | Returns  | Description              |
-| -------------------- | -------- | ------------------------ |
-| `setTheme(themeKey)` | `void`   | Switch to specific theme |
-| `getCurrentTheme()`  | `String` | Get current theme key    |
-| `getThemes()`        | `Object` | Get all available themes |
+| Method                | Returns  | Description                                       |
+| --------------------- | -------- | ------------------------------------------------- |
+| `setTheme(themeKey)`  | `void`   | Switch to specific theme                          |
+| `getCurrentTheme()`   | `String` | Get current theme key                             |
+| `getThemes()`         | `Object` | Get all available themes                          |
+| `updateButtonLabel()` | `void`   | Update button label (auto-called on `html[lang]`) |
 
 ### Editor API (when `enableEditor: true`)
 
 | Method                             | Returns | Description                    |
 | ---------------------------------- | ------- | ------------------------------ |
-| `editor.open()`                    | `void`  | Open theme selector panel      |
+| `editor.openThemeSelector()`       | `void`  | Open theme selector panel      |
 | `editor.openThemeEditor(themeKey)` | `void`  | Open editor for specific theme |
 | `editor.close()`                   | `void`  | Close editor panel             |
 
@@ -257,14 +228,6 @@ See [examples/api.html](examples/api.html) for a complete example.
 - **Dark**: Inverted colors with adjusted hue, saturation, and brightness
 - **Grayscale**: Black and white for printing or reduced distraction
 - **Custom**: Fully customizable theme with combined filters (editable via theme editor)
-
-## Browser Support
-
-Works in all modern browsers that support CSS filters:
-
-- Chrome/Edge 18+
-- Firefox 35+
-- Safari 9.1+
 
 ## License
 
