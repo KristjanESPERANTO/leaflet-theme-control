@@ -17,7 +17,7 @@ A Leaflet control for switching between visual themes using CSS filters. Perfect
 
 ## Installation
 
-### As npm package (coming soon)
+### As npm package
 
 ```bash
 npm install leaflet-theme-control
