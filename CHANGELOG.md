@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.2](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.1...v0.1.2) (2025-12-26)
+
+### Documentation
+
+- update installation section (npm package is published) ([8fd83c7](https://github.com/kristjanesperanto/leaflet-theme-control/commit/8fd83c7aaaf1f86b08010ad93a605d883485dc28))
+
+### Chores
+
+- **examples:** improve info-box readability in dark mode ([e147b67](https://github.com/kristjanesperanto/leaflet-theme-control/commit/e147b673b462b81da4625c0aba2f523bafe9a4bd))
+
 ## [0.1.1](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.0...v0.1.1) (2025-12-26)
 
 ### Chores
