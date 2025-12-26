@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.1](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.0...v0.1.1) (2025-12-26)
+
+### Chores
+
+- update homepage URL to point to GitHub Pages ([65c24ce](https://github.com/kristjanesperanto/leaflet-theme-control/commit/65c24ce0a968a41d73f864848785a6fcf595aa98))
+- update TypeScript types and homepage URL ([fd5b32b](https://github.com/kristjanesperanto/leaflet-theme-control/commit/fd5b32bdc0d0fabd108dc49828a7e6c2811aa964))
+
 ## [0.1.0](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.0.5...v0.1.0) (2025-12-26)
 
 ### Features

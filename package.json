@@ -1,6 +1,6 @@
 {
   "name": "leaflet-theme-control",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Leaflet control for switching between visual themes (light, dark, grayscale, custom, etc.) using CSS filters",
   "main": "src/leaflet-theme-control.js",
   "module": "src/leaflet-theme-control.js",
