@@ -25,11 +25,14 @@
     "leaflet",
     "dark-mode",
     "theme",
+    "theme-editor",
     "accessibility",
     "css-filter",
     "map",
     "grayscale",
-    "high-contrast"
+    "high-contrast",
+    "filter",
+    "leaflet-plugin"
   ],
   "author": "Kristjan ESPERANTO",
   "license": "MIT",
