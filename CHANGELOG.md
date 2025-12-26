@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.3](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.2...v0.1.3) (2025-12-26)
+
+### Documentation
+
+- improve and modernize README ([a0eab73](https://github.com/kristjanesperanto/leaflet-theme-control/commit/a0eab731f43652425a00c70a16c88ff77551f8d0))
+
+### Chores
+
+- correct API references and improve discoverability ([d7a1233](https://github.com/kristjanesperanto/leaflet-theme-control/commit/d7a12331a30e6f277814660d37ee90ba544c0bae))
+
 ## [0.1.2](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.1...v0.1.2) (2025-12-26)
 
 ### Documentation
