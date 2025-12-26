@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.4](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.0.3...v0.0.4) (2025-12-26)
+
+### Bug Fixes
+
+- only show edit button for the active theme ([17b65f8](https://github.com/kristjanesperanto/leaflet-theme-control/commit/17b65f818be8ce50f91ad9ee53f660ed4d0fdddb))
+
 ## [0.0.3](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.0.2...v0.0.3) (2025-12-26)
 
 ### Bug Fixes
