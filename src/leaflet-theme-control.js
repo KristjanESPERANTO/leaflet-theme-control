@@ -57,6 +57,9 @@ export class ThemeControl extends Control {
     // AbortController for automatic event cleanup
     this._abortController = new AbortController()
 
+    // Setup MutationObserver to watch for language changes on html[lang]
+    this._setupLanguageObserver()
+
     // Setup media query listener for system theme changes
     if (this.options.detectSystemTheme) {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -143,6 +146,12 @@ export class ThemeControl extends Control {
     // Abort all event listeners
     this._abortController.abort()
 
+    // Disconnect language observer
+    if (this._langObserver) {
+      this._langObserver.disconnect()
+      this._langObserver = null
+    }
+
     // Cleanup editor
     if (this.editor) {
       this.editor.cleanup()
@@ -150,6 +159,25 @@ export class ThemeControl extends Control {
 
     this.button = null
     this.map = null
+  }
+
+  _setupLanguageObserver() {
+    // Watch for changes to html[lang] attribute
+    this._langObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'lang') {
+          // Language changed, update button label
+          this.updateButtonLabel()
+          break
+        }
+      }
+    })
+
+    // Observe the html element for lang attribute changes
+    this._langObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['lang'],
+    })
   }
 
   _updateButton(button, themeKey) {
