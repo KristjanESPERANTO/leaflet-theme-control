@@ -152,6 +152,7 @@ export class ThemeEditor {
       contrast: 'Contrast',
       sepia: 'Sepia',
       grayscaleFilter: 'Grayscale',
+      themeButton: 'Theme',
     }
 
     return labels[key] || key

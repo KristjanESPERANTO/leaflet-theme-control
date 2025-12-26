@@ -158,9 +158,27 @@ export class ThemeControl extends Control {
     const theme = this.options.themes[themeKey]
     const label = this._getThemeLabel(themeKey)
 
-    button.setAttribute('aria-label', 'Theme: ' + label)
-    button.title = 'Theme: ' + label
+    // Get translated button prefix or use default
+    let buttonPrefix = 'Theme'
+    if (this.options.getEditorLabels) {
+      const translated = this.options.getEditorLabels('themeButton')
+      if (translated && translated !== 'themeButton') {
+        buttonPrefix = translated
+      }
+    }
+
+    const fullLabel = `${buttonPrefix}: ${label}`
+    button.setAttribute('aria-label', fullLabel)
+    button.title = fullLabel
     button.textContent = theme.icon || '🎨'
+  }
+
+  /**
+   * Update button label (useful for language changes)
+   * Call this method after changing language to update the button's aria-label and title
+   */
+  updateButtonLabel() {
+    this._updateButton(this.button, this.currentTheme)
   }
 
   _getThemeLabel(themeKey) {
