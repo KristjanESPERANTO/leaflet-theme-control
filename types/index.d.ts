@@ -116,6 +116,18 @@ declare module "leaflet" {
      * @returns The translated label
      */
     getEditorLabels?: (key: string) => string;
+
+    /**
+     * Position of the theme editor panel.
+     * @default "topright"
+     */
+    panelPosition?: "topright" | "topleft" | "bottomright" | "bottomleft";
+
+    /**
+     * Z-index for the theme editor panel.
+     * @default 1000
+     */
+    panelZIndex?: number;
   }
 
   /**
@@ -167,6 +179,13 @@ declare module "leaflet" {
      * @returns The theme collection
      */
     getThemes(): ThemeCollection;
+
+    /**
+     * Updates the button label text.
+     * Useful for updating translations after a language change.
+     * Called automatically when html[lang] attribute changes (since v0.1.0).
+     */
+    updateButtonLabel(): void;
   }
 }
 
