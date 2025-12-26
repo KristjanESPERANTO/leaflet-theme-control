@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.0.5](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.0.4...v0.0.5) (2025-12-26)
+
+### Features
+
+- support i18n for button aria-label and title ([c2bd797](https://github.com/kristjanesperanto/leaflet-theme-control/commit/c2bd7975cddcfa7bc441a6ececf6d45bbd2fe375))
+
 ## [0.0.4](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.0.3...v0.0.4) (2025-12-26)
 
 ### Bug Fixes
