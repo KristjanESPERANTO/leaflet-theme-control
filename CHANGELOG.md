@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.0](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.0.5...v0.1.0) (2025-12-26)
+
+### Features
+
+- auto-update button label on language change ([edc98d3](https://github.com/kristjanesperanto/leaflet-theme-control/commit/edc98d3186888965e151a82331e5ea5d1afdcfda))
+
 ## [0.0.5](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.0.4...v0.0.5) (2025-12-26)
 
 ### Features
