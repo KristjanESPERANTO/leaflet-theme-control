@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.4](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.3...v0.1.4) (2025-12-28)
+
+### Bug Fixes
+
+- reset to user-provided theme values instead of plugin defaults ([e0274f4](https://github.com/kristjanesperanto/leaflet-theme-control/commit/e0274f4953ee77fce74e41b3907c0e09ad155bd2))
+
+### Documentation
+
+- remove emojis ([1c04d06](https://github.com/kristjanesperanto/leaflet-theme-control/commit/1c04d06db31d39efa182caf10cc7ac6b53b1f1f1))
+
+### Chores
+
+- **types:** add TypeScript definitions for ThemeEditor ([8026bee](https://github.com/kristjanesperanto/leaflet-theme-control/commit/8026beeb459f29128109bf11fcf850f698676ab2))
+
 ## [0.1.3](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.2...v0.1.3) (2025-12-26)
 
 ### Documentation
