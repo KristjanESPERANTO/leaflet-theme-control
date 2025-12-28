@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest'
-import { DEFAULT_THEMES } from '../src/leaflet-theme-control.js'
+import { DEFAULT_THEMES, ThemeControl } from '../src/leaflet-theme-control.js'
 
 describe('DEFAULT_THEMES', () => {
   it('should export default themes', () => {
@@ -72,5 +72,94 @@ describe('Theme Filter Strings', () => {
   it('should have grayscale filter for grayscale theme', () => {
     const grayscaleFilter = DEFAULT_THEMES.grayscale.filter
     expect(grayscaleFilter).toMatch(/grayscale\(/)
+  })
+})
+
+describe('ThemeControl with Custom Themes', () => {
+  beforeEach(() => {
+    localStorage.clear()
+  })
+
+  it('should store original theme values on initialization', () => {
+    const customThemes = {
+      ...DEFAULT_THEMES,
+      dark: {
+        ...DEFAULT_THEMES.dark,
+        filter: 'invert(1) hue-rotate(200deg) saturate(0.9) brightness(0.9)',
+      },
+    }
+
+    const control = new ThemeControl({
+      themes: customThemes,
+      addButton: false,
+    })
+
+    expect(control.originalThemes).toBeDefined()
+    expect(control.originalThemes.dark).toBeDefined()
+    expect(control.originalThemes.dark.filter).toBe('invert(1) hue-rotate(200deg) saturate(0.9) brightness(0.9)')
+  })
+
+  it('should store original theme values for default themes when no custom themes provided', () => {
+    const control = new ThemeControl({
+      addButton: false,
+    })
+
+    expect(control.originalThemes).toBeDefined()
+    expect(control.originalThemes.dark).toBeDefined()
+    expect(control.originalThemes.dark.filter).toBe(DEFAULT_THEMES.dark.filter)
+    expect(control.originalThemes.light.filter).toBe(DEFAULT_THEMES.light.filter)
+  })
+
+  it('should preserve all original theme properties', () => {
+    const customThemes = {
+      light: {
+        ...DEFAULT_THEMES.light,
+        filter: '',
+      },
+      dark: {
+        ...DEFAULT_THEMES.dark,
+        filter: 'invert(1) hue-rotate(200deg)',
+        controlStyle: 'dark',
+      },
+      custom: {
+        label: 'My Custom',
+        filter: 'sepia(0.5)',
+        controlStyle: 'light',
+      },
+    }
+
+    const control = new ThemeControl({
+      themes: customThemes,
+      addButton: false,
+    })
+
+    expect(control.originalThemes.light.filter).toBe('')
+    expect(control.originalThemes.dark.filter).toBe('invert(1) hue-rotate(200deg)')
+    expect(control.originalThemes.dark.controlStyle).toBe('dark')
+    expect(control.originalThemes.custom.filter).toBe('sepia(0.5)')
+    expect(control.originalThemes.custom.controlStyle).toBe('light')
+  })
+
+  it('should not mutate DEFAULT_THEMES when using custom themes', () => {
+    const originalDarkFilter = DEFAULT_THEMES.dark.filter
+
+    const customThemes = {
+      ...DEFAULT_THEMES,
+      dark: {
+        ...DEFAULT_THEMES.dark,
+        filter: 'invert(1) hue-rotate(200deg)',
+      },
+    }
+
+    const control = new ThemeControl({
+      themes: customThemes,
+      addButton: false,
+    })
+
+    // Control should use the custom filter
+    expect(control.originalThemes.dark.filter).toBe('invert(1) hue-rotate(200deg)')
+
+    // DEFAULT_THEMES should remain unchanged
+    expect(DEFAULT_THEMES.dark.filter).toBe(originalDarkFilter)
   })
 })
