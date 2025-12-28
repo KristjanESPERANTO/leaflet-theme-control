@@ -593,16 +593,16 @@ export class ThemeEditor {
     delete this.customFilters[themeKey]
     this._saveCustomFilters()
 
-    // Restore default filter and controlStyle from DEFAULT_THEMES
+    // Restore original filter and controlStyle from user-provided themes
     // but KEEP user-defined properties like applyToSelectors
-    const defaultTheme = DEFAULT_THEMES[themeKey]
+    const originalTheme = this.themeControl.originalThemes[themeKey]
     const currentTheme = this.themeControl.options.themes[themeKey]
 
-    if (defaultTheme && currentTheme) {
+    if (originalTheme && currentTheme) {
       // Only reset the editable properties (filter, controlStyle)
       // Keep other properties like applyToSelectors, icon, label, className
-      currentTheme.filter = defaultTheme.filter
-      currentTheme.controlStyle = defaultTheme.controlStyle
+      currentTheme.filter = originalTheme.filter
+      currentTheme.controlStyle = originalTheme.controlStyle
     }
     else if (!currentTheme) {
       // Theme doesn't exist - this shouldn't happen
@@ -610,8 +610,8 @@ export class ThemeEditor {
       return
     }
     else {
-      // For custom themes not in DEFAULT_THEMES, we can't reset
-      console.warn(`Theme "${themeKey}" has no default in DEFAULT_THEMES, cannot reset filter values`)
+      // For themes not in originalThemes, we can't reset
+      console.warn(`Theme "${themeKey}" has no original values, cannot reset filter values`)
     }
 
     // Reapply theme if it's currently active

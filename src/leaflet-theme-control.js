@@ -51,6 +51,16 @@ export class ThemeControl extends Control {
       })
     }
 
+    // Store original themes for reset functionality in editor
+    // This ensures reset uses user-provided values, not DEFAULT_THEMES
+    this.originalThemes = {}
+    for (const [key, theme] of Object.entries(this.options.themes)) {
+      this.originalThemes[key] = {
+        filter: theme.filter,
+        controlStyle: theme.controlStyle,
+      }
+    }
+
     this.root = document.documentElement
     this.savedTheme = localStorage.getItem(this.options.storageKey)
 
