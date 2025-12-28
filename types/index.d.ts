@@ -131,6 +131,28 @@ declare module "leaflet" {
   }
 
   /**
+   * Theme editor for customizing theme filters.
+   * Only available when enableEditor is true.
+   */
+  class ThemeEditor {
+    /**
+     * Opens the theme selector panel.
+     */
+    openThemeSelector(): void;
+
+    /**
+     * Opens the theme editor for a specific theme.
+     * @param themeKey - The key of the theme to edit
+     */
+    openThemeEditor(themeKey: string): void;
+
+    /**
+     * Closes the editor panel.
+     */
+    close(): void;
+  }
+
+  /**
    * Leaflet control for switching between visual themes.
    *
    * Supports multiple themes using CSS filters:
@@ -155,6 +177,11 @@ declare module "leaflet" {
    */
   class ThemeControl extends Control {
     options: ThemeControlOptions;
+
+    /**
+     * Theme editor instance (only available when enableEditor is true).
+     */
+    editor?: ThemeEditor;
 
     /**
      * Creates a new ThemeControl instance.
