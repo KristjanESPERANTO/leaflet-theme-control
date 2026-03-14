@@ -454,13 +454,13 @@ export class ThemeEditor {
     body.appendChild(this._createControlStyleSelector(controlStyle))
 
     // Filter sliders
-    body.appendChild(this._createSlider('invert', filterValues.invert || 0, 0, 1, 0.1))
-    body.appendChild(this._createSlider('hueRotate', filterValues.hueRotate || 0, 0, 360, 1, '°'))
-    body.appendChild(this._createSlider('saturate', filterValues.saturate || 1, 0, 2, 0.1))
-    body.appendChild(this._createSlider('brightness', filterValues.brightness || 1, 0, 2, 0.1))
-    body.appendChild(this._createSlider('contrast', filterValues.contrast || 1, 0, 2, 0.1))
-    body.appendChild(this._createSlider('sepia', filterValues.sepia || 0, 0, 1, 0.1))
-    body.appendChild(this._createSlider('grayscale', filterValues.grayscale || 0, 0, 1, 0.1))
+    body.appendChild(this._createSlider('invert', filterValues.invert ?? 0, 0, 1, 0.1))
+    body.appendChild(this._createSlider('hueRotate', filterValues.hueRotate ?? 0, 0, 360, 1, '°'))
+    body.appendChild(this._createSlider('saturate', filterValues.saturate ?? 1, 0, 2, 0.1))
+    body.appendChild(this._createSlider('brightness', filterValues.brightness ?? 1, 0, 2, 0.1))
+    body.appendChild(this._createSlider('contrast', filterValues.contrast ?? 1, 0, 2, 0.1))
+    body.appendChild(this._createSlider('sepia', filterValues.sepia ?? 0, 0, 1, 0.1))
+    body.appendChild(this._createSlider('grayscale', filterValues.grayscale ?? 0, 0, 1, 0.1))
 
     return body
   }
