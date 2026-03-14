@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.5](https://github.com/KristjanESPERANTO/leaflet-theme-control/compare/v0.1.4...v0.1.5) (2026-03-14)
+
+
+### Bug Fixes
+
+* use epsilon for float comparisons in filter string builder ([17acac7](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/17acac7fa24bde74008d2ac26bbf9dcd8d9e4db7))
+* use nullish coalescing for slider default values ([7344103](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/734410394acc3df12e82ef9ad526702a4be2c9b1))
+
+
+### Chores
+
+* add CHANGELOG.md to .prettierignore ([fc058b9](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/fc058b9c58b7f3bb789aa6cc10cd822c3a5d341d))
+* add dependabot configuration for npm and GitHub Actions ([53d8bd9](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/53d8bd98fb82fab2c7c9528f14d48e3971c9b90e))
+* add GitHub Actions workflow for publishing to npm ([e843507](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/e843507dc55747cee89ec1e0e5a03e2c81d27d88))
+* correct capitalization of GitHub username in URLs ([6b2f2d9](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/6b2f2d9989e6d1e20cadad54ca1574c24dde2b0f))
+* update devDependencies ([3532b00](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/3532b001efbefe3c798fb0af9556532dd9c57b95))
+
+
+### Performance Improvements
+
+* hoist labels constant and simplify filter parsing ([281a511](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/281a511448cbefaa1aac3e84de904aac9f72edb4))
+
 ## [0.1.4](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.3...v0.1.4) (2025-12-28)
 
 ### Bug Fixes
