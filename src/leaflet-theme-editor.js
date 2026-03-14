@@ -58,6 +58,9 @@ export class ThemeEditor {
     this.currentView = 'selector' // 'selector' or 'editor'
     this.editingTheme = null
 
+    // AbortController for automatic event cleanup
+    this._abortController = new AbortController()
+
     // Storage key for custom filters
     this.storageKey = `${themeControl.options.storageKey}-custom-filters`
 
@@ -159,12 +162,12 @@ export class ThemeEditor {
 
     this.panel = panel
 
-    // Close on ESC key
-    this._onKeyDown = (e) => {
+    // Close on ESC key (listener lives for the lifetime of the panel)
+    document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen) {
         this.close()
       }
-    }
+    }, { signal: this._abortController.signal })
 
     return panel
   }
@@ -185,9 +188,6 @@ export class ThemeEditor {
     this.currentView = 'selector'
     this.panel.style.display = 'block'
     this._renderThemeSelector()
-
-    // Add keyboard listener
-    document.addEventListener('keydown', this._onKeyDown)
 
     // Focus first interactive element
     setTimeout(() => {
@@ -222,9 +222,6 @@ export class ThemeEditor {
     this.panel.style.display = 'none'
     this.currentView = 'selector'
     this.editingTheme = null
-
-    // Remove keyboard listener
-    document.removeEventListener('keydown', this._onKeyDown)
   }
 
   _isThemeModified(themeKey) {
@@ -264,11 +261,8 @@ export class ThemeEditor {
       this.close()
     }
 
-    // Remove keyboard listener (in case close() wasn't called)
-    if (this._onKeyDown) {
-      document.removeEventListener('keydown', this._onKeyDown)
-      this._onKeyDown = null
-    }
+    // Abort all event listeners
+    this._abortController.abort()
 
     // Remove panel from DOM
     if (this.panel && this.panel.parentNode) {
