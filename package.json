@@ -38,12 +38,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kristjanesperanto/leaflet-theme-control.git"
+    "url": "git+https://github.com/KristjanESPERANTO/leaflet-theme-control.git"
   },
   "bugs": {
-    "url": "https://github.com/kristjanesperanto/leaflet-theme-control/issues"
+    "url": "https://github.com/KristjanESPERANTO/leaflet-theme-control/issues"
   },
-  "homepage": "https://kristjanesperanto.github.io/leaflet-theme-control/",
+  "homepage": "https://KristjanESPERANTO.github.io/leaflet-theme-control/",
   "peerDependencies": {
     "leaflet": ">=2.0.0-alpha.1"
   },
