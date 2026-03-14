@@ -1,6 +1,48 @@
 import { DomEvent, DomUtil } from 'leaflet'
 import { DEFAULT_THEMES } from './leaflet-theme-control-themes.js'
 
+/** Default editor UI labels (allocated once, reused on every _getLabel call) */
+const DEFAULT_LABELS = {
+  selectTheme: 'Select Theme',
+  customize: 'Customize',
+  close: 'Close',
+  back: 'Back',
+  resetToDefault: 'Reset to Default',
+  customizeTheme: 'Customize this theme',
+  customBadge: 'Custom',
+  controlStyle: 'Control Style',
+  lightControls: 'Light',
+  darkControls: 'Dark',
+  invert: 'Invert',
+  hueRotate: 'Hue Rotate',
+  saturate: 'Saturate',
+  brightness: 'Brightness',
+  contrast: 'Contrast',
+  sepia: 'Sepia',
+  grayscaleFilter: 'Grayscale',
+  themeButton: 'Theme',
+}
+
+/**
+ * Filter definitions: key → { cssName, regex, defaultValue }
+ * Used by both _parseFilterString and _isThemeModified.
+ */
+const FILTER_DEFS = [
+  { key: 'invert', css: 'invert', default: 0 },
+  { key: 'hueRotate', css: 'hue-rotate', default: 0, unit: 'deg' },
+  { key: 'saturate', css: 'saturate', default: 1 },
+  { key: 'brightness', css: 'brightness', default: 1 },
+  { key: 'contrast', css: 'contrast', default: 1 },
+  { key: 'sepia', css: 'sepia', default: 0 },
+  { key: 'grayscale', css: 'grayscale', default: 0 },
+]
+
+// Pre-compiled regexes (one per filter, built from FILTER_DEFS)
+const FILTER_REGEXES = FILTER_DEFS.map(({ css, unit }) => {
+  const unitPattern = unit ? unit : ''
+  return new RegExp(`${css}\\(([\\d.]+)${unitPattern}\\)`)
+})
+
 /**
  * ThemeEditor - UI for selecting and editing themes
  *
@@ -133,29 +175,7 @@ export class ThemeEditor {
       return this.themeControl.options.getEditorLabels(key)
     }
 
-    // Default labels
-    const labels = {
-      selectTheme: 'Select Theme',
-      customize: 'Customize',
-      close: 'Close',
-      back: 'Back',
-      resetToDefault: 'Reset to Default',
-      customizeTheme: 'Customize this theme',
-      customBadge: 'Custom',
-      controlStyle: 'Control Style',
-      lightControls: 'Light',
-      darkControls: 'Dark',
-      invert: 'Invert',
-      hueRotate: 'Hue Rotate',
-      saturate: 'Saturate',
-      brightness: 'Brightness',
-      contrast: 'Contrast',
-      sepia: 'Sepia',
-      grayscaleFilter: 'Grayscale',
-      themeButton: 'Theme',
-    }
-
-    return labels[key] || key
+    return DEFAULT_LABELS[key] || key
   }
 
   openThemeSelector() {
@@ -646,50 +666,17 @@ export class ThemeEditor {
   }
 
   _parseFilterString(filterString) {
-    if (!filterString) {
-      return {
-        invert: 0,
-        hueRotate: 0,
-        saturate: 1,
-        brightness: 1,
-        contrast: 1,
-        sepia: 0,
-        grayscale: 0,
+    const values = {}
+    for (let i = 0; i < FILTER_DEFS.length; i++) {
+      const { key, default: def } = FILTER_DEFS[i]
+      if (filterString) {
+        const match = filterString.match(FILTER_REGEXES[i])
+        values[key] = match ? parseFloat(match[1]) : def
+      }
+      else {
+        values[key] = def
       }
     }
-
-    const values = {
-      invert: 0,
-      hueRotate: 0,
-      saturate: 1,
-      brightness: 1,
-      contrast: 1,
-      sepia: 0,
-      grayscale: 0,
-    }
-
-    // Parse each filter function
-    const invertMatch = filterString.match(/invert\(([\d.]+)\)/)
-    if (invertMatch) values.invert = parseFloat(invertMatch[1])
-
-    const hueMatch = filterString.match(/hue-rotate\(([\d.]+)deg\)/)
-    if (hueMatch) values.hueRotate = parseFloat(hueMatch[1])
-
-    const saturateMatch = filterString.match(/saturate\(([\d.]+)\)/)
-    if (saturateMatch) values.saturate = parseFloat(saturateMatch[1])
-
-    const brightnessMatch = filterString.match(/brightness\(([\d.]+)\)/)
-    if (brightnessMatch) values.brightness = parseFloat(brightnessMatch[1])
-
-    const contrastMatch = filterString.match(/contrast\(([\d.]+)\)/)
-    if (contrastMatch) values.contrast = parseFloat(contrastMatch[1])
-
-    const sepiaMatch = filterString.match(/sepia\(([\d.]+)\)/)
-    if (sepiaMatch) values.sepia = parseFloat(sepiaMatch[1])
-
-    const grayscaleMatch = filterString.match(/grayscale\(([\d.]+)\)/)
-    if (grayscaleMatch) values.grayscale = parseFloat(grayscaleMatch[1])
-
     return values
   }
 }
