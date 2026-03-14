@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.5](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.4...v0.1.5) (2026-03-14)
+
+
+### Bug Fixes
+
+* use epsilon for float comparisons in filter string builder ([a374d8a](https://github.com/kristjanesperanto/leaflet-theme-control/commit/a374d8ad039ade546c6a73869d26990cb65726aa))
+* use nullish coalescing for slider default values ([e61eb96](https://github.com/kristjanesperanto/leaflet-theme-control/commit/e61eb964a055b191daee6632b0a0080e23388f01))
+
+
+### Chores
+
+* add CHANGELOG.md to .prettierignore ([dd0c1be](https://github.com/kristjanesperanto/leaflet-theme-control/commit/dd0c1beb1a5cdb7d6a458c82700797d11832d15a))
+* update devDependencies ([b47afeb](https://github.com/kristjanesperanto/leaflet-theme-control/commit/b47afeb5be0a9f59d122e84346d899f70801d0a3))
+
+
+### Performance Improvements
+
+* hoist labels constant and simplify filter parsing ([712862a](https://github.com/kristjanesperanto/leaflet-theme-control/commit/712862a7e6a5062498bc859a069e5f2e06528dde))
+
 ## [0.1.4](https://github.com/kristjanesperanto/leaflet-theme-control/compare/v0.1.3...v0.1.4) (2025-12-28)
 
 ### Bug Fixes
