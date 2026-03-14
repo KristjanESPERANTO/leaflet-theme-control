@@ -33,23 +33,10 @@ export class ThemeControl extends Control {
   initialize(options) {
     Util.setOptions(this, options)
 
-    // Create deep copies of themes to avoid mutating DEFAULT_THEMES
-    // This is necessary because spread operator only does shallow copies
-    if (this.options.themes) {
-      // User provided custom themes - create deep copies of each theme
-      const themesCopy = {}
-      Object.keys(this.options.themes).forEach((key) => {
-        themesCopy[key] = { ...this.options.themes[key] }
-      })
-      this.options.themes = themesCopy
-    }
-    else {
-      // No themes provided - use copies of DEFAULT_THEMES
-      this.options.themes = {}
-      Object.keys(DEFAULT_THEMES).forEach((key) => {
-        this.options.themes[key] = { ...DEFAULT_THEMES[key] }
-      })
-    }
+    // Create shallow copies of themes to avoid mutating the source objects
+    this.options.themes = this._shallowCopyThemes(
+      this.options.themes || DEFAULT_THEMES,
+    )
 
     // Store original themes for reset functionality in editor
     // This ensures reset uses user-provided values, not DEFAULT_THEMES
@@ -260,32 +247,12 @@ export class ThemeControl extends Control {
     const controlStyle = theme.controlStyle || 'light'
     this.root.setAttribute('data-control-style', controlStyle)
 
-    // Remove all theme classes from root
-    Object.values(this.options.themes).forEach((t) => {
-      if (t.className) {
-        this.root.classList.remove(t.className)
-      }
-    })
-
-    // Add current theme class to root
-    if (theme.className) {
-      this.root.classList.add(theme.className)
-    }
-
-    // Also apply theme class to control container if map exists
+    // Apply theme classes to root and control container
+    this._applyThemeClasses(this.root, theme)
     if (this.map) {
       const controlContainer = this.map.getContainer().querySelector('.leaflet-control-container')
       if (controlContainer) {
-        // Remove all theme classes from control container
-        Object.values(this.options.themes).forEach((t) => {
-          if (t.className) {
-            controlContainer.classList.remove(t.className)
-          }
-        })
-        // Add current theme class
-        if (theme.className) {
-          controlContainer.classList.add(theme.className)
-        }
+        this._applyThemeClasses(controlContainer, theme)
       }
     }
 
@@ -344,6 +311,29 @@ export class ThemeControl extends Control {
     if (this.options.onChange) {
       this.options.onChange(themeKey, theme)
     }
+  }
+
+  /**
+   * Shallow-copy each theme object from the given source.
+   * @param {object} source - Theme map to copy
+   * @returns {object} New object with copied themes
+   */
+  _shallowCopyThemes(source) {
+    return Object.fromEntries(
+      Object.entries(source).map(([key, theme]) => [key, { ...theme }]),
+    )
+  }
+
+  /**
+   * Remove all theme classes from an element, then add the active one.
+   * @param {HTMLElement} el - Target element
+   * @param {object} theme - Currently active theme config
+   */
+  _applyThemeClasses(el, theme) {
+    for (const t of Object.values(this.options.themes)) {
+      if (t.className) el.classList.remove(t.className)
+    }
+    if (theme.className) el.classList.add(theme.className)
   }
 
   getCurrentTheme() {
