@@ -631,15 +631,16 @@ export class ThemeEditor {
   }
 
   _buildFilterString(values) {
+    const EPS = 0.01
     const parts = []
 
-    if (values.invert > 0) parts.push(`invert(${values.invert})`)
-    if (values.hueRotate !== 0) parts.push(`hue-rotate(${values.hueRotate}deg)`)
-    if (values.saturate !== 1) parts.push(`saturate(${values.saturate})`)
-    if (values.brightness !== 1) parts.push(`brightness(${values.brightness})`)
-    if (values.contrast !== 1) parts.push(`contrast(${values.contrast})`)
-    if (values.sepia > 0) parts.push(`sepia(${values.sepia})`)
-    if (values.grayscale > 0) parts.push(`grayscale(${values.grayscale})`)
+    if (values.invert > EPS) parts.push(`invert(${values.invert})`)
+    if (Math.abs(values.hueRotate) > EPS) parts.push(`hue-rotate(${values.hueRotate}deg)`)
+    if (Math.abs(values.saturate - 1) > EPS) parts.push(`saturate(${values.saturate})`)
+    if (Math.abs(values.brightness - 1) > EPS) parts.push(`brightness(${values.brightness})`)
+    if (Math.abs(values.contrast - 1) > EPS) parts.push(`contrast(${values.contrast})`)
+    if (values.sepia > EPS) parts.push(`sepia(${values.sepia})`)
+    if (values.grayscale > EPS) parts.push(`grayscale(${values.grayscale})`)
 
     return parts.join(' ')
   }
