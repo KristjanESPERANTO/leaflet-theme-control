@@ -45,24 +45,24 @@
   },
   "homepage": "https://KristjanESPERANTO.github.io/leaflet-theme-control/",
   "peerDependencies": {
-    "leaflet": ">=2.0.0-alpha.1"
+    "leaflet": "^2.0.0-beta.5"
   },
   "devDependencies": {
-    "@eslint/css": "^1.0.0",
+    "@eslint/css": "^2.0.1",
     "@eslint/js": "^10.0.1",
-    "@eslint/markdown": "^7.5.1",
-    "@stylistic/eslint-plugin": "^5.10.0",
-    "commit-and-tag-version": "^12.6.1",
-    "eslint": "^10.0.3",
-    "eslint-plugin-import-x": "^4.16.2",
-    "eslint-plugin-jsdoc": "^62.8.0",
-    "globals": "^17.4.0",
-    "happy-dom": "^20.8.4",
-    "leaflet": "^2.0.0-alpha.1",
-    "lint-staged": "^16.4.0",
-    "prettier": "^3.8.1",
-    "simple-git-hooks": "^2.13.1",
-    "vitest": "^4.1.0"
+    "@eslint/markdown": "^9.0.0",
+    "@stylistic/eslint-plugin": "^6.0.1",
+    "commit-and-tag-version": "^13.3.0",
+    "eslint": "^10.15.0",
+    "eslint-plugin-import-x": "^4.18.1",
+    "eslint-plugin-jsdoc": "^65.5.0",
+    "globals": "^17.14.0",
+    "happy-dom": "^21.0.4",
+    "leaflet": "^2.0.0-beta.5",
+    "lint-staged": "^17.6.1",
+    "prettier": "^3.10.1",
+    "simple-git-hooks": "^2.14.0",
+    "vitest": "^5.1.1"
   },
   "scripts": {
     "test": "npm run lint && vitest run",
@@ -81,5 +81,8 @@
       "eslint --fix",
       "prettier --write --ignore-unknown"
     ]
+  },
+  "allowScripts": {
+    "simple-git-hooks@2.14.0": true
   }
 }
