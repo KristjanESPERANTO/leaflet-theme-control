@@ -64,10 +64,12 @@
     "lint-staged": "^17.6.1",
     "prettier": "^3.10.1",
     "simple-git-hooks": "^2.14.0",
+    "typescript": "^6.0.3",
     "vitest": "^5.1.1"
   },
   "scripts": {
-    "test": "npm run lint && vitest run",
+    "test": "npm run lint && npm run test:types && vitest run",
+    "test:types": "tsc -p spec/types",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint && prettier --check .",
