@@ -117,6 +117,40 @@ describe('ThemeControl system theme detection', () => {
   })
 })
 
+describe('ThemeEditor changes', () => {
+  it('should notify onChange once when editing the active theme', () => {
+    const onChange = vi.fn()
+    const control = new ThemeControl({
+      addButton: false,
+      enableEditor: true,
+      defaultTheme: 'dark',
+      onChange,
+    })
+    onChange.mockClear()
+
+    control.editor._saveTheme('dark', { invert: 1 }, 'dark')
+
+    expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledWith('dark', control.options.themes.dark)
+  })
+
+  it('should notify onChange when editing an inactive theme', () => {
+    const onChange = vi.fn()
+    const control = new ThemeControl({
+      addButton: false,
+      enableEditor: true,
+      defaultTheme: 'light',
+      onChange,
+    })
+    onChange.mockClear()
+
+    control.editor._saveTheme('dark', { invert: 1 }, 'dark')
+
+    expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledWith('dark', control.options.themes.dark)
+  })
+})
+
 describe('ThemeControl with Custom Themes', () => {
   beforeEach(() => {
     localStorage.clear()

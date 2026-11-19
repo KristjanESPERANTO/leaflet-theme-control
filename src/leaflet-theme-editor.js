@@ -589,9 +589,7 @@ export class ThemeEditor {
     if (this.themeControl.getCurrentTheme() === themeKey) {
       this.themeControl.setTheme(themeKey)
     }
-
-    // Fire onChange callback for editor changes
-    if (this.themeControl.options.onChange) {
+    else if (this.themeControl.options.onChange) {
       this.themeControl.options.onChange(themeKey, this.themeControl.options.themes[themeKey])
     }
   }
