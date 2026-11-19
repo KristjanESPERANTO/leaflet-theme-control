@@ -75,6 +75,25 @@ describe('Theme Filter Strings', () => {
   })
 })
 
+describe('ThemeControl lifecycle', () => {
+  it('should restore resources after removing and re-adding', () => {
+    const mapContainer = document.createElement('div')
+    const map = { getContainer: () => mapContainer }
+    const control = new ThemeControl({ enableEditor: true })
+    const firstEditor = control.editor
+
+    control.onAdd(map)
+    control.onRemove()
+    control.onAdd(map)
+
+    expect(control._abortController.signal.aborted).toBe(false)
+    expect(control._langObserver).not.toBeNull()
+    expect(control.editor).not.toBe(firstEditor)
+    expect(control.editor.panel.parentNode).toBe(mapContainer)
+    expect(control.button).toBeInstanceOf(HTMLButtonElement)
+  })
+})
+
 describe('ThemeControl system theme detection', () => {
   it('should keep automatic theme changes unsaved', () => {
     let onChange

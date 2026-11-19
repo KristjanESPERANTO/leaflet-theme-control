@@ -51,27 +51,7 @@ export class ThemeControl extends Control {
     this.root = document.documentElement
     this.savedTheme = localStorage.getItem(this.options.storageKey)
 
-    // AbortController for automatic event cleanup
-    this._abortController = new AbortController()
-
-    // Setup MutationObserver to watch for language changes on html[lang]
-    this._setupLanguageObserver()
-
-    // Setup media query listener for system theme changes
-    if (this.options.detectSystemTheme) {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-      this.prefersDark = mediaQuery.matches
-
-      mediaQuery.addEventListener('change', (e) => {
-        // Only auto-switch if user hasn't manually selected a theme
-        if (!this.savedTheme) {
-          this.setTheme(e.matches ? 'dark' : this.options.defaultTheme, false)
-        }
-      }, { signal: this._abortController.signal })
-    }
-    else {
-      this.prefersDark = false
-    }
+    this._setupLifecycleListeners()
 
     // Initialize theme editor if enabled
     if (this.options.enableEditor) {
@@ -82,6 +62,25 @@ export class ThemeControl extends Control {
     const initialTheme = this._determineInitialTheme()
     this.currentTheme = initialTheme
     this._applyTheme(initialTheme, false)
+  }
+
+  _setupLifecycleListeners() {
+    this._abortController = new AbortController()
+    this._setupLanguageObserver()
+
+    if (this.options.detectSystemTheme) {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      this.prefersDark = mediaQuery.matches
+
+      mediaQuery.addEventListener('change', (e) => {
+        if (!this.savedTheme) {
+          this.setTheme(e.matches ? 'dark' : this.options.defaultTheme, false)
+        }
+      }, { signal: this._abortController.signal })
+    }
+    else {
+      this.prefersDark = false
+    }
   }
 
   _determineInitialTheme() {
@@ -101,6 +100,14 @@ export class ThemeControl extends Control {
 
   onAdd(map) {
     this.map = map
+
+    if (this._abortController.signal.aborted) {
+      this._setupLifecycleListeners()
+    }
+
+    if (this.options.enableEditor && !this.editor) {
+      this.editor = new ThemeEditor(this)
+    }
 
     // Add theme selector panel to map container if editor enabled
     if (this.options.enableEditor && this.editor) {
@@ -152,6 +159,7 @@ export class ThemeControl extends Control {
     // Cleanup editor
     if (this.editor) {
       this.editor.cleanup()
+      this.editor = null
     }
 
     this.button = null
