@@ -1,4 +1,4 @@
-import { Control, DomEvent, DomUtil, Util } from 'leaflet'
+import { Control, DomEvent, DomUtil } from 'leaflet'
 import { DEFAULT_THEMES } from './leaflet-theme-control-themes.js'
 import { ThemeEditor } from './leaflet-theme-editor.js'
 
@@ -13,9 +13,9 @@ import { ThemeEditor } from './leaflet-theme-editor.js'
  */
 export class ThemeControl extends Control {
   static {
-    this.setDefaultOptions({
+    this.mergeOptions({
       position: 'topright',
-      themes: null, // Will be set to a copy of DEFAULT_THEMES in initialize
+      themes: null, // Will be set to a copy of DEFAULT_THEMES in the constructor
       defaultTheme: 'light',
       storageKey: 'leaflet-theme',
       detectSystemTheme: true,
@@ -30,8 +30,8 @@ export class ThemeControl extends Control {
     })
   }
 
-  initialize(options) {
-    Util.setOptions(this, options)
+  constructor(options) {
+    super(options)
 
     // Create shallow copies of themes to avoid mutating the source objects
     this.options.themes = this._shallowCopyThemes(
