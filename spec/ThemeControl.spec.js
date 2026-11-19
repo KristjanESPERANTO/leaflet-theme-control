@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { DEFAULT_THEMES, ThemeControl } from '../src/leaflet-theme-control.js'
 
 describe('DEFAULT_THEMES', () => {
@@ -72,6 +72,48 @@ describe('Theme Filter Strings', () => {
   it('should have grayscale filter for grayscale theme', () => {
     const grayscaleFilter = DEFAULT_THEMES.grayscale.filter
     expect(grayscaleFilter).toMatch(/grayscale\(/)
+  })
+})
+
+describe('ThemeControl system theme detection', () => {
+  it('should keep automatic theme changes unsaved', () => {
+    let onChange
+    window.matchMedia = vi.fn().mockReturnValue({
+      matches: false,
+      media: '(prefers-color-scheme: dark)',
+      addEventListener: vi.fn((event, listener) => {
+        onChange = listener
+      }),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })
+
+    const control = new ThemeControl({ addButton: false })
+    onChange({ matches: true })
+
+    expect(control.getCurrentTheme()).toBe('dark')
+    expect(localStorage.getItem('leaflet-theme')).toBeNull()
+    expect(control.savedTheme).toBeNull()
+  })
+
+  it('should stop automatic changes after a manual selection', () => {
+    let onChange
+    window.matchMedia = vi.fn().mockReturnValue({
+      matches: false,
+      media: '(prefers-color-scheme: dark)',
+      addEventListener: vi.fn((event, listener) => {
+        onChange = listener
+      }),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })
+
+    const control = new ThemeControl({ addButton: false })
+    control.setTheme('light')
+    onChange({ matches: true })
+
+    expect(control.getCurrentTheme()).toBe('light')
+    expect(localStorage.getItem('leaflet-theme')).toBe('light')
   })
 })
 

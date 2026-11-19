@@ -65,7 +65,7 @@ export class ThemeControl extends Control {
       mediaQuery.addEventListener('change', (e) => {
         // Only auto-switch if user hasn't manually selected a theme
         if (!this.savedTheme) {
-          this.setTheme(e.matches ? 'dark' : this.options.defaultTheme)
+          this.setTheme(e.matches ? 'dark' : this.options.defaultTheme, false)
         }
       }, { signal: this._abortController.signal })
     }
@@ -226,14 +226,18 @@ export class ThemeControl extends Control {
     this.setTheme(nextTheme)
   }
 
-  setTheme(themeKey) {
+  setTheme(themeKey, save = true) {
     if (!this.options.themes[themeKey]) {
       console.warn(`Theme "${themeKey}" not found`)
       return
     }
 
+    if (save) {
+      this.savedTheme = themeKey
+    }
+
     this.currentTheme = themeKey
-    this._applyTheme(themeKey, true)
+    this._applyTheme(themeKey, save)
     this._updateButton(this.button, themeKey)
   }
 
