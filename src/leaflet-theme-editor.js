@@ -489,25 +489,19 @@ export class ThemeEditor {
   _createSlider(key, value, min, max, step, unit = '') {
     const label = this._getLabel(key)
 
-    return this._el('div', { className: 'theme-editor-slider' },
-      this._el('label', { htmlFor: `slider-${key}` },
-        this._el('span', { className: 'slider-label' }, label),
-        this._el('span', { 'className': 'slider-value', 'data-key': key }, `${value}${unit}`),
-      ),
-      this._el('input', {
-        'type': 'range',
-        'id': `slider-${key}`,
-        'data-key': key,
-        'min': String(min),
-        'max': String(max),
-        'step': String(step),
-        'value': String(value),
-        'aria-label': `${label}: ${value}${unit}`,
-        'aria-valuemin': String(min),
-        'aria-valuemax': String(max),
-        'aria-valuenow': String(value),
-      }),
-    )
+    return this._el('div', { className: 'theme-editor-slider' }, this._el('label', { htmlFor: `slider-${key}` }, this._el('span', { className: 'slider-label' }, label), this._el('span', { 'className': 'slider-value', 'data-key': key }, `${value}${unit}`)), this._el('input', {
+      'type': 'range',
+      'id': `slider-${key}`,
+      'data-key': key,
+      'min': String(min),
+      'max': String(max),
+      'step': String(step),
+      'value': String(value),
+      'aria-label': `${label}: ${value}${unit}`,
+      'aria-valuemin': String(min),
+      'aria-valuemax': String(max),
+      'aria-valuenow': String(value),
+    }))
   }
 
   _attachEditorListeners(themeKey, initialValues, initialControlStyle) {
