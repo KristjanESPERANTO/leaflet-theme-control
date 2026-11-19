@@ -39,7 +39,7 @@ import "leaflet-theme-control/src/leaflet-theme-control.css";
 <script type="importmap">
   {
     "imports": {
-      "leaflet": "https://unpkg.com/leaflet@2.0.0-alpha.1/dist/leaflet.js",
+      "leaflet": "https://unpkg.com/leaflet@2.0.0-beta.5/dist/leaflet.js",
       "leaflet-theme-control": "https://unpkg.com/leaflet-theme-control/src/leaflet-theme-control.js"
     }
   }
@@ -56,12 +56,12 @@ import "leaflet-theme-control/src/leaflet-theme-control.css";
 ### Basic Example
 
 ```javascript
-import L from "leaflet";
+import { Map, TileLayer } from "leaflet";
 import { ThemeControl } from "leaflet-theme-control";
 
-const map = L.map("map").setView([51.505, -0.09], 13);
+const map = new Map("map").setView([51.505, -0.09], 13);
 
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+new TileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "© OpenStreetMap contributors"
 }).addTo(map);
 
