@@ -1,33 +1,69 @@
-name: Publish to npm
+name: Publish release
 
 on:
-  release:
-    types: [published]
-  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
 
-permissions:
-  contents: read
-  id-token: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write # required for npm provenance
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
-          node-version: 26
+          node-version: current
           registry-url: https://registry.npmjs.org
+
+      - name: Verify release tag
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          if [[ "$GITHUB_REF_NAME" != "v$PACKAGE_VERSION" ]]; then
+            echo "Tag $GITHUB_REF_NAME does not match package version $PACKAGE_VERSION" >&2
+            exit 1
+          fi
 
       - run: npm ci
 
       - run: npm test
 
-      - run: npm publish --provenance --access public
+      - name: Check npm version
+        id: npm
+        run: |
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          VERSIONS=$(npm view "$PACKAGE_NAME" versions --json)
+          PUBLISHED=$(node -e 'const versions = JSON.parse(process.argv[1]); if (!Array.isArray(versions)) throw new Error("Expected an array of npm versions"); console.log(versions.includes(process.argv[2]));' "$VERSIONS" "$PACKAGE_VERSION")
+          echo "published=$PUBLISHED" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to npm
+        if: steps.npm.outputs.published == 'false'
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ""
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RELEASES=$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases" --jq '.[] | [.tag_name, .draft] | @tsv')
+          if grep -Fxq -- "$GITHUB_REF_NAME"$'\ttrue' <<< "$RELEASES"; then
+            echo "GitHub release $GITHUB_REF_NAME is a draft" >&2
+            exit 1
+          elif grep -Fxq -- "$GITHUB_REF_NAME"$'\tfalse' <<< "$RELEASES"; then
+            echo "GitHub release $GITHUB_REF_NAME already exists"
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              --verify-tag \
+              --title "$GITHUB_REF_NAME" \
+              --generate-notes
+          fi

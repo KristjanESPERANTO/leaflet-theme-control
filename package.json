@@ -75,7 +75,7 @@
     "lint": "eslint && prettier --check .",
     "lint:fix": "eslint --fix && prettier --write .",
     "prepare": "simple-git-hooks",
-    "release": "commit-and-tag-version"
+    "release": "npm test && commit-and-tag-version"
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
