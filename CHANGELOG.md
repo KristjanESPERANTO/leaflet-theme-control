@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.1.6](https://github.com/KristjanESPERANTO/leaflet-theme-control/compare/v0.1.5...v0.1.6) (2026-11-20)
+
+### Bug Fixes
+
+* avoid duplicate theme change callbacks ([b98cb56](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/b98cb5675901d775027bdafb4f7facae4b3c6b8d))
+* modernize public type declarations ([dfe7e3b](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/dfe7e3b39d0a9910c7910de8bf3138d9bd245d99))
+* preserve CSS during tree shaking ([ee46cc4](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/ee46cc4a9c2846a82069bfbf5eb3f4441d195846))
+* respect manual theme selection ([38786ef](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/38786ef0dbdfba1a378de84c49601554719dc37d))
+* restore control lifecycle on re-add ([5fd1d15](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/5fd1d154df92b0f8d691c66a8dfb4fbc2fb8233c))
+* support Leaflet 2 beta API ([ae54261](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/ae54261017f8d15b0954c9963c27d4474e0cb48c))
+
+### Documentation
+
+* update examples for Leaflet 2 ([0cb8ba0](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/0cb8ba0bee02094e3c7af9d3f3f1e21209d5c725))
+
+### Chores
+
+* update devDependencies ([591ccdf](https://github.com/KristjanESPERANTO/leaflet-theme-control/commit/591ccdf14cccc7615f26ca1fc19df84f4c7ffbf7))
+
 ## [0.1.5](https://github.com/KristjanESPERANTO/leaflet-theme-control/compare/v0.1.4...v0.1.5) (2026-03-14)
 
 
